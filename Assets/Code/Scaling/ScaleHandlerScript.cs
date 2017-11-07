@@ -33,6 +33,7 @@ public class ScaleHandlerScript : MonoBehaviour {
 
     void Start()
     {
+        
         resizeObjectsQueue = new List<GameObject>();
         children = new List<Transform>();
 
@@ -101,12 +102,26 @@ public class ScaleHandlerScript : MonoBehaviour {
 
         foreach (Transform child in actualResizeObject.transform)
         {
-            Destroy(child.gameObject);
+            if (child.name == "ScaleHandler")
+            {
+                Destroy(child.gameObject);
+            }
+           
         }
 
-        Color color = actualResizeObject.GetComponent<Renderer>().material.color;
-        color.a = 0.5f;
-        actualResizeObject.GetComponent<Renderer>().material.color = color;
+
+        if (actualResizeObject.GetComponent<Renderer>() != null && actualResizeObject.GetComponent<Renderer>().material.HasProperty("_Color"))
+        {
+            Color color = actualResizeObject.GetComponent<Renderer>().material.color;
+            color.a = 0.5f;
+            if (transparentMaterial != null)
+            {
+                actualResizeObject.GetComponent<Renderer>().material = transparentMaterial;
+            }
+
+            actualResizeObject.GetComponent<Renderer>().material.color = color;
+        }
+        
 
         actualResizeObject.transform.position = parentObject.transform.position;
         actualResizeObject.transform.rotation = parentObject.transform.rotation;

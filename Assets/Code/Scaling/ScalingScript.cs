@@ -78,6 +78,8 @@ public class ScalingScript : MonoBehaviour {
     {
         if ((controller.GetComponent<ControllerScript>().secondController == null || controller.GetComponent<ControllerScript>().secondController.GetComponent<ControllerScript>().pickup != mainObject))
         {
+            controller.GetComponent<ControllerRaycastScript>().isActive = false;
+
             controller.GetComponent<ControllerScript>().TriggerUp += OnTriggerUp;
             GetComponent<ObjectInteractionScript>().SetIsSelected(true);
             tempObject = parent.GetComponent<ScaleHandlerScript>().AddNewResizingObject(gameObject);
@@ -155,6 +157,7 @@ public class ScalingScript : MonoBehaviour {
 
         GetComponent<ObjectInteractionScript>().SetIsSelected(false);
         ControllerCollision(actualController, GetComponent<ObjectInteractionScript>().GetCollision());
+        controller.GetComponent<ControllerRaycastScript>().isActive = true;
     }
 
     private void CalculateDirection()

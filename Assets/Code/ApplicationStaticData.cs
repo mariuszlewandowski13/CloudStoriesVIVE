@@ -23,10 +23,18 @@ public static class ApplicationStaticData
     public static ProjectObject actualProject;
 
     public static List<ImagesInfo> shapesInfos;
+    public static List<FileInfoStruct> moviesInfos;
+    public static List<FileInfoStruct> gifsInfos;
+    public static List<FileInfoStruct> audioInfos;
+    public static List<Object3DInfo> objects3DInfos;
 
 
     public static string mediaPath = "C:/media/";
     public static string shapesPath = mediaPath + "Shapes/";
+    public static string moviesPath = mediaPath + "Movies/";
+    public static string gifsPath = mediaPath + "GIF/";
+    public static string audioPath = mediaPath + "Audio/";
+    public static string objects3DPath = mediaPath + "Objects3D/";
 
     #endregion
 

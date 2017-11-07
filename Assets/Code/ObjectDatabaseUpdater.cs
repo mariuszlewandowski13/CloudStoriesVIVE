@@ -89,6 +89,10 @@ public class ObjectDatabaseUpdater : MonoBehaviour {
             Load2DShape();
             extension = additionalData;
         }
+        else if (type == ObjectsTypes.movie)
+        {
+            LoadMovie();
+        }
         CreateSceneObject(); 
     }
 
@@ -101,6 +105,14 @@ public class ObjectDatabaseUpdater : MonoBehaviour {
             tex = new Texture2D(2, 2);
             tex.LoadImage(textureBytes);
             GetComponent<Renderer>().material.mainTexture = tex;
+        }
+    }
+
+    public void LoadMovie()
+    {
+        if (objectType2 != "")
+        {
+            GetComponent<MediaPlayerCtrl>().m_strFileName = objectType3 + objectType2;
         }
     }
 

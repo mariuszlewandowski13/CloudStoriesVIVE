@@ -28,6 +28,31 @@ public struct ImagesInfo
     }
 };
 
+public struct FileInfoStruct
+{
+    public string name;
+
+    public string path;
+    public string extension;
+};
+
+public struct Object3DInfo
+{
+    public string name;
+    public string path;
+    public string extension;
+    public Mesh mesh;
+
+    public List<TextureInfo> texturesInfos;
+};
+
+public struct TextureInfo
+{
+    public string name;
+    public string path;
+    public Texture2D tex;
+}
+
 #endregion
 
 public class ImageFilesInfoLoader : FilesInfoLoader {
@@ -85,6 +110,111 @@ public class ImageFilesInfoLoader : FilesInfoLoader {
         }
 
         return imagesInfoList;
+    }
+
+    public List<FileInfoStruct> LoadFilesInfo(string[] filesExtensions, string additionalPath = "", int counterLimit = -1, long sizeLimit = -1)
+    {
+        List<FileInfoStruct> fileInfoList = new List<FileInfoStruct>();
+
+        foreach (string extension in filesExtensions)
+        {
+            string[] imagesNames = Directory.GetFiles(filesPath + additionalPath, "*" + extension);
+
+            foreach (string imageName in imagesNames)
+            {
+                try
+                {
+                    long fileLength = new FileInfo(imageName).Length;
+
+                    if ((sizeLimit > 0 && fileLength < sizeLimit) || sizeLimit == -1)
+                    {
+
+                        FileInfoStruct imgInfo;
+                        imgInfo.name = additionalPath + Path.GetFileName(imageName);
+                        imgInfo.path = filesPath;
+                        imgInfo.extension = extension;
+                        fileInfoList.Add(imgInfo);
+                    }
+
+
+                }
+                catch (Exception e)
+                {
+                    Debug.Log("Failed to load: " + imageName);
+                    Debug.Log(e);
+                }
+                if (counterLimit > 0 && fileInfoList.Count >= counterLimit) break;
+            }
+            if (counterLimit > 0 && fileInfoList.Count >= counterLimit) break;
+        }
+
+        return fileInfoList;
+    }
+
+    public List<Object3DInfo> Load3DObjectsInfos(string[] filesExtensions, string additionalPath = "", int counterLimit = -1, long sizeLimit = -1)
+    {
+        string[] texturesExtensions = new string[] { ".png", ".jpg"};
+
+        List<Object3DInfo> objectsInfoList = new List<Object3DInfo>();
+
+        foreach (string extension in filesExtensions)
+        {
+            string[] dirNames = Directory.GetDirectories(filesPath);
+            foreach (string dirName in dirNames)
+            {
+                string[] imagesNames = Directory.GetFiles(dirName + additionalPath, "*" + extension);
+
+                foreach (string imageName in imagesNames)
+                {
+                    try
+                    {
+                        long fileLength = new FileInfo(imageName).Length;
+
+                        if ((sizeLimit > 0 && fileLength < sizeLimit) || sizeLimit == -1)
+                        {
+
+                            Object3DInfo imgInfo;
+                            imgInfo.name = additionalPath + Path.GetFileName(imageName);
+                            imgInfo.path = dirName;
+                            imgInfo.extension = extension;
+                            imgInfo.mesh = FastObjImporter.Instance.ImportFile(dirName + "/" + additionalPath + Path.GetFileName(imageName));
+
+                            imgInfo.texturesInfos = new List<TextureInfo>();
+                            foreach (string ext in texturesExtensions)
+                            {
+                                string[] texts = Directory.GetFiles(dirName + additionalPath, "*" + ext);
+                                foreach (string tex in texts)
+                                {
+                                    TextureInfo texInfo;
+                                    texInfo.name = Path.GetFileName(tex);
+                                    texInfo.path = dirName;
+                                    texInfo.tex = new Texture2D(2, 2);
+                                    byte[] bytes = File.ReadAllBytes(dirName + "/" + Path.GetFileName(tex));
+                                    texInfo.tex.LoadImage(bytes);
+                                    imgInfo.texturesInfos.Add(texInfo);
+                                }
+
+                            }
+
+                                objectsInfoList.Add(imgInfo);
+                        }
+
+
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Log("Failed to load: " + imageName);
+                        Debug.Log(e);
+                    }
+                    if (counterLimit > 0 && objectsInfoList.Count >= counterLimit) break;
+                }
+            }
+
+            
+            if (counterLimit > 0 && objectsInfoList.Count >= counterLimit) break;
+        }
+
+        return objectsInfoList;
     }
     #endregion
 }

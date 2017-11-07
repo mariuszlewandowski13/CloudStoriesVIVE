@@ -8,7 +8,10 @@ using System;
 
 public class EnviromentMAnager : MonoBehaviour {
 
+    public GameObject object3DPrefab;
+
     public GameObject[] scaleHandlers;
+
 
     private GameObject layoutObject;
     private GameObject sceneObjects;
@@ -19,13 +22,32 @@ public class EnviromentMAnager : MonoBehaviour {
         sceneObjects = transform.Find("SceneObjects").gameObject;
     }
 
-    public GameObject SpawnObject(GameObject objToSpawn, Vector3 position,Vector3 scale, ObjectsTypes objectType,  Quaternion rotation = new Quaternion())
+    public GameObject SpawnObject(GameObject objToSpawn, Vector3 position, Vector3 scale, ObjectsTypes objectType, Quaternion rotation = new Quaternion(), bool selfRotation = false)
     {
-        GameObject newObject = Instantiate(objToSpawn, position, rotation);
+
+        GameObject newObject = null;
+
+        if (objectType == ObjectsTypes.object3D)
+        {
+            newObject = Instantiate(object3DPrefab, position, rotation);
+        }
+        else {
+            newObject = Instantiate(objToSpawn, position, rotation);
+        }
+
         newObject.transform.localScale = scale * 2.0f;
         newObject.transform.parent = sceneObjects.transform;
 
-        GameObject scaleHandler = Instantiate(scaleHandlers[(int)objectType], position, rotation);
+        GameObject scaleHandler = null; 
+
+        if (selfRotation)
+        {
+             scaleHandler = Instantiate(scaleHandlers[(int)objectType], position, scaleHandlers[(int)objectType].transform.rotation);
+        }
+        else {
+             scaleHandler = Instantiate(scaleHandlers[(int)objectType], position, rotation);
+        }
+        
 
         scaleHandler.name = "ScaleHandler";
 

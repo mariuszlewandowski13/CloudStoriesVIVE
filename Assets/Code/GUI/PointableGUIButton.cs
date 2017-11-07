@@ -32,18 +32,30 @@ public class PointableGUIButton : MonoBehaviour, IRaycastPointable {
 
     private void hideHighlight()
     {
-        GetComponent<Renderer>().material.color = normalColor;
+        if (GetComponent<Renderer>() != null && GetComponent<Renderer>().material.HasProperty("_Color"))
+        {
+            GetComponent<Renderer>().material.color = normalColor;
+        }
+        
 
     }
 
     private void showHighLight()
     {
-        GetComponent<Renderer>().material.color = highlightedColor;
+        if (GetComponent<Renderer>() != null && GetComponent<Renderer>().material.HasProperty("_Color"))
+        {
+            GetComponent<Renderer>().material.color = highlightedColor;
+        }
+       
     }
 
     private void Start()
     {
-        normalColor = GetComponent<Renderer>().material.color;
+        if (GetComponent<Renderer>() != null && GetComponent<Renderer>().material.HasProperty("_Color"))
+        {
+            normalColor = GetComponent<Renderer>().material.color;
+        }
+        
     }
 
 }
