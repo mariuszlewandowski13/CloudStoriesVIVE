@@ -8,7 +8,7 @@ public class ControllerRaycastScript : RaycastBase {
 
     private RaycastHit hit;
 
-    private Transform actualPointing;
+    public Transform actualPointing;
 
     private ControllerScript controller;
 
@@ -39,7 +39,7 @@ public class ControllerRaycastScript : RaycastBase {
             bool pressedDown = controller.triggerDown;
             bool pressedUp = controller.triggerUp;
 
-            if (!scrollingStarted && hit.transform != null && hit.transform.GetComponent<IClickable>() != null && (hit.transform.tag == "Btn" || hit.transform.tag == "SceneObject"))
+            if (!scrollingStarted && hit.transform != null && hit.transform.GetComponent<IClickable>() != null && (hit.transform.tag == "Btn" || hit.transform.tag == "SceneObject" || hit.transform.tag == "Tools"))
             {
                 isPointing = true;
                 hitPoint = hit.point;

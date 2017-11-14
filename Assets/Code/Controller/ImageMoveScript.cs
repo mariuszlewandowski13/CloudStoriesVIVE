@@ -33,14 +33,14 @@ public class ImageMoveScript : MovingScript
     {
         if (isEnter && !active)
         {
-                gameObj.GetComponent<ControllerScript>().TriggerDown += OnTriggerDown;
+                gameObj.GetComponent<ControllerScript>().OnTriggerDown += OnTriggerDown;
                 active = true;
                 actualController = gameObj;
             
         }
         else if (!isEnter && !GetComponent<ObjectInteractionScript>().GetIsSelected() && active)
         {
-            gameObj.GetComponent<ControllerScript>().TriggerDown -= OnTriggerDown;
+            gameObj.GetComponent<ControllerScript>().OnTriggerDown -= OnTriggerDown;
             active = false;
         }
     }
@@ -58,13 +58,13 @@ public class ImageMoveScript : MovingScript
 
     private void OnTriggerDown(GameObject controller)
     {
-
+       
            
-            controller.GetComponent<ControllerScript>().TriggerUp += OnTriggerUp;
+            controller.GetComponent<ControllerScript>().OnTriggerUp += OnTriggerUp;
             
             GetComponent<ObjectInteractionScript>().SetIsSelected(true);
 
-            controller.GetComponent<ControllerScript>().ControllerMove += OnControllerMove;
+            controller.GetComponent<ControllerScript>().OnControllerMove += OnControllerMove;
             rotationParent = controller.GetComponent<ControllerScript>().rotationCenter;
             controllerFirstPosition = controllerSecondPosition = controller.transform.position;
 
@@ -80,8 +80,8 @@ public class ImageMoveScript : MovingScript
     }
     private void OnTriggerUp(GameObject controller)
     {
-        controller.GetComponent<ControllerScript>().TriggerUp -= OnTriggerUp;
-        controller.GetComponent<ControllerScript>().ControllerMove -= OnControllerMove;
+        controller.GetComponent<ControllerScript>().OnTriggerUp -= OnTriggerUp;
+        controller.GetComponent<ControllerScript>().OnControllerMove -= OnControllerMove;
         GetComponent<ObjectInteractionScript>().SetIsSelected(false);
         gameObject.transform.parent = prevParent;
         CheckAndSetToDestroy(gameObject);

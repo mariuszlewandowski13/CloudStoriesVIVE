@@ -121,11 +121,11 @@ public class ScaleHandlerScript : MonoBehaviour {
 
             actualResizeObject.GetComponent<Renderer>().material.color = color;
         }
-        
 
+        actualResizeObject.transform.parent = parentObject.transform.parent;
         actualResizeObject.transform.position = parentObject.transform.position;
         actualResizeObject.transform.rotation = parentObject.transform.rotation;
-        actualResizeObject.transform.localScale = parentObject.transform.lossyScale;
+        actualResizeObject.transform.localScale = parentObject.transform.localScale;
 
         actualResizeObject.transform.Translate(-Vector3.down * 0.005f, parentObject.transform);
 

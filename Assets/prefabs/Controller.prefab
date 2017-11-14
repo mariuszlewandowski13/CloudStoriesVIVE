@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 114988107595631950}
   - component: {fileID: 114247440008008806}
   - component: {fileID: 114131775890798646}
+  - component: {fileID: 114812583844189770}
   m_Layer: 0
   m_Name: ControlObject
   m_TagString: Untagged
@@ -199,6 +200,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbd93bc6b08261845ad717e6d0d8b0fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  treshold: 0.05
+  moving: 0
 --- !u!114 &114247440008008806
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -227,9 +230,23 @@ MonoBehaviour:
   pickup: {fileID: 0}
   collidingGameObjects: []
   realCollidingGameObjects: []
+  secondController: {fileID: 0}
+  triggerButton: 33
+  trackedObj: {fileID: 0}
   selected: {fileID: 0}
   triggerDown: 0
   triggerUp: 0
+--- !u!114 &114812583844189770
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1957710288879456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 447dcb929475d1f4abf38352c71c0c97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114988107595631950
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -241,7 +258,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e66fd3ea1ad00d848b509a60f77c3040, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actualPointing: {fileID: 0}
   isActive: 1
+  scrollingStarted: 0
+  triggerDownClickedTime: 0
+  lastPosition: {x: 0, y: 0, z: 0}
+  clickDuration: 0.3
+  click: 0
 --- !u!120 &120735301141090176
 LineRenderer:
   m_ObjectHideFlags: 1

@@ -58,7 +58,7 @@ public class ScalingScript : MonoBehaviour {
     {
         if (isEnter && !active && (gameObj.GetComponent<ControllerScript>().secondController == null || gameObj.GetComponent<ControllerScript>().secondController.GetComponent<ControllerScript>().pickup != mainObject))
         {
-            gameObj.GetComponent<ControllerScript>().TriggerDown += OnTriggerDown;
+            gameObj.GetComponent<ControllerScript>().OnTriggerDown += OnTriggerDown;
 
             active = true;
             SetColor();
@@ -66,7 +66,7 @@ public class ScalingScript : MonoBehaviour {
         }
         else if (!isEnter && !GetComponent<ObjectInteractionScript>().GetIsSelected() && active)
         {
-            gameObj.GetComponent<ControllerScript>().TriggerDown -= OnTriggerDown;
+            gameObj.GetComponent<ControllerScript>().OnTriggerDown -= OnTriggerDown;
 
             active = false;
             SetColor();
@@ -74,13 +74,13 @@ public class ScalingScript : MonoBehaviour {
         }
     }
 
-    private void OnTriggerDown(GameObject controller)
+    public void OnTriggerDown(GameObject controller)
     {
         if ((controller.GetComponent<ControllerScript>().secondController == null || controller.GetComponent<ControllerScript>().secondController.GetComponent<ControllerScript>().pickup != mainObject))
         {
             controller.GetComponent<ControllerRaycastScript>().isActive = false;
 
-            controller.GetComponent<ControllerScript>().TriggerUp += OnTriggerUp;
+            
             GetComponent<ObjectInteractionScript>().SetIsSelected(true);
             tempObject = parent.GetComponent<ScaleHandlerScript>().AddNewResizingObject(gameObject);
             
@@ -94,11 +94,12 @@ public class ScalingScript : MonoBehaviour {
             topMainScale = referencePoint.transform.localScale;
             
             CalculateDirection();
-            controller.GetComponent<ControllerScript>().ControllerMove += OnControllerMove;
+            controller.GetComponent<ControllerScript>().OnTriggerUp += OnTriggerUp;
+            controller.GetComponent<ControllerScript>().OnControllerMove += OnControllerMove;
         }
     }
 
-    private void OnControllerMove(GameObject controller)
+    public void OnControllerMove(GameObject controller)
     {
         if (tempObject != null)
         {
@@ -142,10 +143,10 @@ public class ScalingScript : MonoBehaviour {
         }
     }
 
-    private void OnTriggerUp(GameObject controller)
+    public void OnTriggerUp(GameObject controller)
     {
-        controller.GetComponent<ControllerScript>().TriggerUp -= OnTriggerUp;
-        controller.GetComponent<ControllerScript>().ControllerMove -= OnControllerMove;
+        controller.GetComponent<ControllerScript>().OnTriggerUp -= OnTriggerUp;
+        controller.GetComponent<ControllerScript>().OnControllerMove -= OnControllerMove;
         
 
         parent.GetComponent<ScaleHandlerScript>().RemoveResizingObject(gameObject);

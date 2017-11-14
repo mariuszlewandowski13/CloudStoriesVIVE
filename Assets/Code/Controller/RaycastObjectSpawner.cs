@@ -14,11 +14,13 @@ public class RaycastObjectSpawner : RaycastBase {
 
     private ObjectsTypes spawnedObjectType;
 
-    
+    private float raycasterLength = 1.0f;
 
     private RaycastHit hit;
 
     private GameObject rotationCenter;
+
+    private Transform spawningObjectPrevTransform;
 
     void Start()
     {
@@ -32,6 +34,7 @@ public class RaycastObjectSpawner : RaycastBase {
     {
 
         spawning = true;
+        raycasterLength = Vector3.Distance(pos, transform.position);
         spawnedObject = enviroment.GetComponent<EnviromentMAnager>().SpawnObject(objectToSpawn, pos,scale, objType, Quaternion.Euler(rotation), selfRot);
 
         spawnedObjectType = objType;
@@ -45,6 +48,9 @@ public class RaycastObjectSpawner : RaycastBase {
         rotationCenter = new GameObject();
         rotationCenter.transform.position = transform.position;
         rotationCenter.transform.rotation = transform.rotation;
+        rotationCenter.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+
+        spawningObjectPrevTransform = spawnedObject.transform.parent;
 
         spawnedObject.transform.parent = rotationCenter.transform;
 
@@ -54,11 +60,17 @@ public class RaycastObjectSpawner : RaycastBase {
     {
 
         spawning = true;
+        raycasterLength = Vector3.Distance(pos, transform.position);
         spawnedObject = enviroment.GetComponent<EnviromentMAnager>().SpawnObject(null, pos, scale, ObjectsTypes.object3D, Quaternion.Euler(rotation));
         spawnedObject.GetComponent<MeshFilter>().mesh = objInfo.mesh;
+
+        string exten = "";
+
         if(objInfo.texturesInfos.Count > 0)
         {
             spawnedObject.GetComponent<Renderer>().material.mainTexture = objInfo.texturesInfos[0].tex;
+            type3 = objInfo.texturesInfos[0].path + "/" + objInfo.texturesInfos[0].name;
+            exten = objInfo.texturesInfos[0].ext;
         }
 
         spawnedObject.AddComponent<BoxCollider>();
@@ -68,14 +80,19 @@ public class RaycastObjectSpawner : RaycastBase {
         //spawnedObject.transform.rotation = Quaternion.Euler(rot);
 
         //  spawnedObject.transform.Rotate(90.0f, 0.0f, 0.0f);
-        spawnedObject.GetComponent<ObjectDatabaseUpdater>().SetTypesAndCreate(ObjectsTypes.object3D, path, type3, "");
+
+
+
+        spawnedObject.GetComponent<ObjectDatabaseUpdater>().SetTypesAndCreate(ObjectsTypes.object3D, path,type3 , exten);
 
         GetComponent<ControllerRaycastScript>().isActive = false;
 
         rotationCenter = new GameObject();
         rotationCenter.transform.position = transform.position;
         rotationCenter.transform.rotation = transform.rotation;
+        rotationCenter.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
+        spawningObjectPrevTransform = spawnedObject.transform.parent;
         spawnedObject.transform.parent = rotationCenter.transform;
 
     }
@@ -91,14 +108,14 @@ public class RaycastObjectSpawner : RaycastBase {
 
             Ray ray = new Ray(transform.position, transform.forward);
 
-            Physics.Raycast(ray, out hit, 3);
-            if (hit.transform != null)
+            Physics.Raycast(ray, out hit, raycasterLength);
+            if (hit.transform != null && hit.transform.tag == "RaycastSpecialColliders")
             {
                 hitPoint = hit.point;
             }
             else
             {
-                hitPoint = transform.forward * 3 + transform.position;
+                hitPoint = transform.forward * raycasterLength + transform.position;
             }
             CursorOn();
             spawnedObject.transform.position = hitPoint;
@@ -122,7 +139,7 @@ public class RaycastObjectSpawner : RaycastBase {
 
     public void StopSpawning()
     {
-        spawnedObject.transform.parent = null;
+        spawnedObject.transform.parent = spawningObjectPrevTransform;
         Destroy(rotationCenter);
         
         spawning = false;
@@ -131,6 +148,7 @@ public class RaycastObjectSpawner : RaycastBase {
         spawnedObject.AddComponent<ObjectInteractionScript>();
         spawnedObject.AddComponent<ImageMoveScript>();
         spawnedObject.AddComponent<SelectingObjectsScript>();
+        spawnedObject.AddComponent<ObjectAnimationScript>();
     }
 
    

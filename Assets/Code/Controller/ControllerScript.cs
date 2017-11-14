@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ControllerScript : MonoBehaviour {
     #region Public Events & Delegates
@@ -8,9 +9,85 @@ public class ControllerScript : MonoBehaviour {
 
 
     public delegate void Interaction(GameObject gameObject);
-    public event Interaction ControllerMove;
-    public event Interaction TriggerUp;
-    public event Interaction TriggerDown;
+    private event Interaction ControllerMove;
+    private event Interaction TriggerUp;
+    private event Interaction TriggerDown;
+
+    List<Interaction> ControllerMoveDelegates = new List<Interaction>();
+    List<Interaction> TriggerUpDelegates = new List<Interaction>();
+    List<Interaction> TriggerDownDelegates = new List<Interaction>();
+
+    public event Interaction OnControllerMove
+    {
+        add
+        {
+            ControllerMove += value;
+            ControllerMoveDelegates.Add(value);
+        }
+
+        remove
+        {
+            ControllerMove -= value;
+            ControllerMoveDelegates.Remove(value);
+        }
+    }
+
+    public event Interaction OnTriggerUp
+    {
+        add
+        {
+            TriggerUp += value;
+            TriggerUpDelegates.Add(value);
+        }
+
+        remove
+        {
+            TriggerUp -= value;
+            TriggerUpDelegates.Remove(value);
+        }
+    }
+
+    public event Interaction OnTriggerDown
+    {
+        add
+        {
+            TriggerDown += value;
+            TriggerDownDelegates.Add(value);
+        }
+
+        remove
+        {
+            TriggerDown -= value;
+            TriggerDownDelegates.Remove(value);
+        }
+    }
+
+    public void RemoveAllEvents()
+    {
+        foreach (Interaction eh in TriggerUpDelegates)
+        {
+            TriggerUp -= eh;
+        }
+
+        foreach (Interaction eh in TriggerDownDelegates)
+        {
+            TriggerDown -= eh;
+        }
+
+        foreach (Interaction eh in ControllerMoveDelegates)
+        {
+            ControllerMove -= eh;
+        }
+
+
+        TriggerDownDelegates.Clear();
+        TriggerUpDelegates.Clear();
+        ControllerMoveDelegates.Clear();
+    }
+
+
+
+
 
     public static event Interaction TriggerDownGlobal;
 
@@ -70,37 +147,42 @@ public class ControllerScript : MonoBehaviour {
             //  Debug.Log("TriggerDown :" + triggerDown.ToString() + " Pickup: " + pickup);
 
 
-            if (triggerDown && TriggerDown != null)
-            {
-                TriggerDown(gameObject);
-            }
+            try {
+                if (triggerDown && TriggerDown != null)
+                {
+                    TriggerDown(gameObject);
+                }
 
-            if (triggerDown && TriggerDownGlobal != null)
-            {
-                TriggerDownGlobal(gameObject);
-            }
+                if (triggerDown && TriggerDownGlobal != null)
+                {
+                    TriggerDownGlobal(gameObject);
+                }
 
-            if (triggerUp && TriggerUp != null)
-            {
-                TriggerUp(gameObject);
-            }
-           
+                if (triggerUp && TriggerUp != null)
+                {
+                    TriggerUp(gameObject);
+                }
 
-            if (ControllerMove != null)
+
+                if (ControllerMove != null)
+                {
+                    ControllerMove(gameObject);
+                }
+            } catch (Exception e)
             {
-                ControllerMove(gameObject);
-            }
-            if (triggerDown && pickup == null)
-            {
-                DeleteSelection();
-            }
+                RemoveAllEvents();
+            } 
 
         }
-      //  //CheckCollidingObjects();
-       // realCollidingGameObjects.Clear();
 
-      
+    }
 
+    private void LateUpdate()
+    {
+        if (triggerDown && pickup == null && GetComponent<ControllerRaycastScript>().actualPointing == null && !GetComponent<RaycastMoveScript>().moving)
+        {
+            DeleteSelection();
+        }
     }
 
     private void OnTriggerEnter(Collider collider)

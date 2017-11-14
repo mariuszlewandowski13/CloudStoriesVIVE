@@ -51,6 +51,7 @@ public struct TextureInfo
     public string name;
     public string path;
     public Texture2D tex;
+    public string ext;
 }
 
 #endregion
@@ -188,6 +189,7 @@ public class ImageFilesInfoLoader : FilesInfoLoader {
                                     TextureInfo texInfo;
                                     texInfo.name = Path.GetFileName(tex);
                                     texInfo.path = dirName;
+                                    texInfo.ext = ext;
                                     texInfo.tex = new Texture2D(2, 2);
                                     byte[] bytes = File.ReadAllBytes(dirName + "/" + Path.GetFileName(tex));
                                     texInfo.tex.LoadImage(bytes);

@@ -95,7 +95,7 @@ public class DatabaseController : MonoBehaviour {
     }
 
 
-    public void SaveObject(ObjectsTypes objectType, string number, Vector3 pos, Vector3 rot, Vector3 size, ResultMethod2 meth, byte [] bytes = null, string extension = "")
+    public void SaveObject(ObjectsTypes objectType, string number, Vector3 pos, Vector3 rot, Vector3 size, ResultMethod2 meth, byte [] bytes = null, string extension = "", byte [] additionalTexBytes = null)
     {
         Debug.Log("Saving");
         WWWForm form = new WWWForm();
@@ -113,17 +113,32 @@ public class DatabaseController : MonoBehaviour {
         form.AddField("sizeY", size.y.ToString());
         form.AddField("sizeZ", size.z.ToString());
 
-        if (bytes != null)
+        form.AddField("projectID", ApplicationStaticData.actualProject.id);
+
+        if (objectType != ObjectsTypes.object3D && bytes != null)
         {
             Debug.Log(extension);
             form.AddBinaryData("file", bytes, number, "image/" + extension);
-           
         }
 
-        form.AddField("projectID", ApplicationStaticData.actualProject.id);
+        string destinationFile = "AddObject.php";
 
+        if (objectType == ObjectsTypes.object3D)
+        {
+            if (bytes != null)
+            {
+                form.AddBinaryData("file", bytes, objectType.ToString() + ".obj", "text/plain");
+            }
 
-        WWW w = new WWW(ApplicationStaticData.serverScriptsPath + "AddObject.php", form);
+            if (additionalTexBytes != null)
+            {
+                form.AddBinaryData("file2", additionalTexBytes, "tex"+extension, "image/" + extension.Substring(1));
+            }
+
+            destinationFile = "Add3DObject.php";
+        }
+
+        WWW w = new WWW(ApplicationStaticData.serverScriptsPath + destinationFile, form);
         StartCoroutine(request(w, meth, pos, rot, size));
     }
 

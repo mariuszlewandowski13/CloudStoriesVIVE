@@ -44,7 +44,7 @@ public class SelectingObjectsScript : MonoBehaviour {
         if (isEnter && !active)
         {
             active = true;
-            gameObj.GetComponent<ControllerScript>().TriggerDown += OnTriggerDown;
+            gameObj.GetComponent<ControllerScript>().OnTriggerDown += OnTriggerDown;
             added = true;
             actualController = gameObj;
 
@@ -52,18 +52,28 @@ public class SelectingObjectsScript : MonoBehaviour {
         else if (!isEnter && active && added)
         {
             active = false;
-            gameObj.GetComponent<ControllerScript>().TriggerDown -= OnTriggerDown;
+            gameObj.GetComponent<ControllerScript>().OnTriggerDown -= OnTriggerDown;
             added = false;
         }
     }
 
     private void OnTriggerDown(GameObject controller)
     {
-        controller.GetComponent<ControllerScript>().SetSelected(gameObject);
+            controller.GetComponent<ControllerScript>().SetSelected(gameObject);
     }
 
     private void FadeOutComponents()
     {
+         if (guiInfoShown)
+        {
+            guiInfoShown = false;
+            GameObject.Find("GUI").GetComponent<GUIManager>().RemoveObjectInfo();
+            if (GetComponent<ObjectAnimationScript>() != null)
+            {
+                GameObject.Find("AnimationManager").GetComponent<AnimationManager>().RemoveActualAnimatedObject();
+            }
+        }
+
         foreach (Transform child in transform)
         {
             if (child.GetComponent<ObjectsFadeScript>() != null)
@@ -97,16 +107,8 @@ public class SelectingObjectsScript : MonoBehaviour {
             //}
             highlighted = false;
         }
-        if (selected && !guiInfoShown && GameObject.Find("GUI") != null && GameObject.Find("GUI").GetComponent<GUIManager>() != null)
-        {
-            guiInfoShown = true;
-            GameObject.Find("GUI").GetComponent<GUIManager>().SetSelectedObjectInfo(gameObject.name);
-        }
-        else if (!selected && guiInfoShown)
-        {
-            guiInfoShown = false;
-            GameObject.Find("GUI").GetComponent<GUIManager>().RemoveObjectInfo();
-        }
+        
+        
             
     }
 
@@ -114,7 +116,7 @@ public class SelectingObjectsScript : MonoBehaviour {
     {
         if (added)
         {
-            actualController.GetComponent<ControllerScript>().TriggerDown -= OnTriggerDown;
+            actualController.GetComponent<ControllerScript>().OnTriggerDown -= OnTriggerDown;
         }
     }
 
@@ -141,6 +143,19 @@ public class SelectingObjectsScript : MonoBehaviour {
 
     private void FadeInComponents()
     {
+        if (!guiInfoShown && GameObject.Find("GUI") != null && GameObject.Find("GUI").GetComponent<GUIManager>() != null)
+        {
+            guiInfoShown = true;
+            GameObject.Find("GUI").GetComponent<GUIManager>().SetSelectedObjectInfo(gameObject.name);
+            if (GetComponent<ObjectAnimationScript>() != null && GameObject.Find("AnimationManager") != null)
+            {
+                GameObject.Find("AnimationManager").GetComponent<AnimationManager>().SetActualAnimatedObject(GetComponent<ObjectAnimationScript>());
+                
+            }
+           
+        }
+
+
         foreach (Transform child in transform)
         {
             if (child.GetComponent<ObjectsFadeScript>() != null)

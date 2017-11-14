@@ -15,7 +15,7 @@ public class RaycastMoveScript : RaycastBase{
     private GameObject movingObject;
     private Transform movingObejctPreviousParent;
 
-    private bool moving;
+    public bool moving;
 
 
     private RaycastHit hit;
@@ -23,6 +23,8 @@ public class RaycastMoveScript : RaycastBase{
     private float raycasterLength = 1.0f;
 
     private GameObject rotationCenter;
+
+    private Vector3 dragOffset;
 
 
     void Start()
@@ -34,15 +36,20 @@ public class RaycastMoveScript : RaycastBase{
     {
 
         moving = true;
+
         movingObject = objectToMove;
+        GetComponent<ControllerScript>().SetSelected(movingObject);
 
         raycasterLength = Vector3.Distance(pos, transform.position);
 
 
         rotationCenter = new GameObject();
-        rotationCenter.transform.position = transform.position;
+        rotationCenter.transform.position = movingObject.transform.position;
         rotationCenter.transform.rotation = transform.rotation;
-       // rotationCenter.transform.LookAt(gameObject.transform);
+        rotationCenter.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        // rotationCenter.transform.LookAt(gameObject.transform);
+
+        dragOffset = pos - movingObject.transform.position;
 
        movingObejctPreviousParent = movingObject.transform.parent;
 
@@ -50,8 +57,6 @@ public class RaycastMoveScript : RaycastBase{
 
 
         GetComponent<ControllerRaycastScript>().isActive = false;
-
-        GetComponent<ControllerScript>().SetSelected(movingObject);
 
         controllerFirstPosition = controllerSecondPosition = transform.position;
     }
@@ -62,12 +67,12 @@ public class RaycastMoveScript : RaycastBase{
         {
             movingObject.transform.parent = null;
 
-            movingObject.SetActive(false);
+            movingObject.transform.position = new Vector3(1000.0f, 1000.0f, 1000.0f);
 
             Ray ray = new Ray(transform.position, transform.forward);
 
             Physics.Raycast(ray, out hit, raycasterLength);
-            if (hit.transform != null)
+            if (hit.transform != null && hit.transform.tag == "RaycastSpecialColliders" )
             {
                 hitPoint = hit.point;
             }
@@ -78,13 +83,12 @@ public class RaycastMoveScript : RaycastBase{
             CursorOn();
 
             
-            movingObject.transform.position = hitPoint;
-            rotationCenter.transform.position = transform.position;
+            movingObject.transform.position = hitPoint - dragOffset;
+            rotationCenter.transform.position = movingObject.transform.position;
             movingObject.transform.parent = rotationCenter.transform;
 
             
             rotationCenter.transform.rotation = transform.rotation;
-            movingObject.SetActive(true);
 
             controllerSecondPosition = controllerFirstPosition;
             controllerFirstPosition = controller.transform.position;

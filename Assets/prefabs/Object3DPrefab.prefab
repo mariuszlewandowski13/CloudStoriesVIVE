@@ -23,6 +23,9 @@ GameObject:
   - component: {fileID: 23068594232675546}
   - component: {fileID: 114849037678271530}
   - component: {fileID: 114135597210449668}
+  - component: {fileID: 114981617598670338}
+  - component: {fileID: 114992045846494602}
+  - component: {fileID: 114957045248726222}
   m_Layer: 0
   m_Name: Object3DPrefab
   m_TagString: SceneObject
@@ -113,3 +116,44 @@ MonoBehaviour:
     lastSavedScale: {x: 0, y: 0, z: 0}
     type: 0
     path: 
+--- !u!114 &114957045248726222
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1881642111583426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40b5b32382ad0604596396e20df3d131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  click: 0
+--- !u!114 &114981617598670338
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1881642111583426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6df7100edcc41b94a9ba9cde92f389dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  database: {fileID: 0}
+  sceneObjInfo: {fileID: 0}
+  creatingObject: 0
+  objectType3: 
+  objectType2: 
+  objectType: 0
+  tex: {fileID: 0}
+--- !u!114 &114992045846494602
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1881642111583426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07d8d5538409d11498a3f5bc577434ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

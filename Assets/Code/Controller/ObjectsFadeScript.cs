@@ -15,13 +15,13 @@ public class ObjectsFadeScript: MonoBehaviour {
 
     #region Private Properties
 
-    private bool fadeIn = false;
-    private bool fadeOut = false;
+    public bool fadeIn = false;
+    public bool fadeOut = false;
 
-    private object fadeInLock = new object();
-    private bool fade = false;
+    public object fadeInLock = new object();
+    public bool fade = false;
 
-    private List<Transform> children;
+    public List<Transform> children;
 
     #endregion
 
@@ -36,18 +36,17 @@ public class ObjectsFadeScript: MonoBehaviour {
         }
 
         FadeOut();
-
     }
 
 
     void Update() {
-        lock (fadeInLock)
-        {
-            if (canFade)
+
+        if (canFade)
             {
-                if (!fade && !fadeOut)
+            
+            if (!fade && !fadeOut)
                 {
-                    fadeIn = false;
+                fadeIn = false;
                     FadeOut();
                 }
                 else if (fade && !fadeIn)
@@ -56,8 +55,6 @@ public class ObjectsFadeScript: MonoBehaviour {
                     FadeIn();
                 }
             }
-        }
-
     }
 
     private void FadeIn()

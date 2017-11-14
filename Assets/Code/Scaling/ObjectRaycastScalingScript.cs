@@ -4,14 +4,14 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(PointableGUIButton))]
-public class SceneObjectRaycastMovingScript : MonoBehaviour, IClickable {
-
+public class ObjectRaycastScalingScript : MonoBehaviour, IClickable
+{
 
     public bool click;
 
     public void Clicked(Vector3 pos, GameObject clickingObject)
     {
-        clickingObject.GetComponent<RaycastMoveScript>().StartMoving(gameObject, pos);
+        clickingObject.GetComponent<RaycasterScalingScript>().StartScaling(gameObject, pos, clickingObject);
     }
 
 

@@ -20,6 +20,8 @@ public class ObjectDatabaseUpdater : MonoBehaviour {
 
     public Texture2D tex;
 
+    private byte[] additionalTextureBytes;
+
     private byte[] textureBytes;
 
     private string extension;
@@ -29,13 +31,14 @@ public class ObjectDatabaseUpdater : MonoBehaviour {
     void Start () {
         sceneObjInfo = GetComponent<SceneObjectInfo>();
         existing = true;
+        InvokeRepeating("UpdateInfo",2.0f, 2.0f);
     }
 	
 	// Update is called once per frame
-	void Update () {
-        if (!creatingObject && sceneObjInfo.obj != null && database != null && existing) 
+	void UpdateInfo () {
+        if (!creatingObject && sceneObjInfo.obj != null && database != null && existing && !AnimationManager.isWorking) 
         {
-            if (transform.position.x != sceneObjInfo.obj.lastSavedPosition.x || transform.position.y != sceneObjInfo.obj.lastSavedPosition.y || transform.position.z != sceneObjInfo.obj.lastSavedPosition.z || transform.rotation.eulerAngles.x != sceneObjInfo.obj.lastSavedRotation.x || transform.rotation.eulerAngles.y != sceneObjInfo.obj.lastSavedRotation.y || transform.rotation.eulerAngles.z != sceneObjInfo.obj.lastSavedRotation.z || transform.lossyScale.x != sceneObjInfo.obj.lastSavedScale.x || transform.lossyScale.y != sceneObjInfo.obj.lastSavedScale.y || transform.lossyScale.z != sceneObjInfo.obj.lastSavedScale.z)
+            if (transform.localPosition.x != sceneObjInfo.obj.lastSavedPosition.x || transform.localPosition.y != sceneObjInfo.obj.lastSavedPosition.y || transform.localPosition.z != sceneObjInfo.obj.lastSavedPosition.z || transform.rotation.eulerAngles.x != sceneObjInfo.obj.lastSavedRotation.x || transform.rotation.eulerAngles.y != sceneObjInfo.obj.lastSavedRotation.y || transform.rotation.eulerAngles.z != sceneObjInfo.obj.lastSavedRotation.z || transform.localScale.x != sceneObjInfo.obj.lastSavedScale.x || transform.localScale.y != sceneObjInfo.obj.lastSavedScale.y || transform.localScale.z != sceneObjInfo.obj.lastSavedScale.z)
             {
                 UpdateObjectPosRot();
             }
@@ -52,9 +55,9 @@ public class ObjectDatabaseUpdater : MonoBehaviour {
     {
         if (database != null)
         {
-            sceneObjInfo.obj.lastSavedPosition = transform.position;
+            sceneObjInfo.obj.lastSavedPosition = transform.localPosition;
             sceneObjInfo.obj.lastSavedRotation = transform.rotation.eulerAngles;
-            sceneObjInfo.obj.lastSavedScale = transform.lossyScale;
+            sceneObjInfo.obj.lastSavedScale = transform.localScale;
 
             database.UpdateObject(sceneObjInfo.obj.lastSavedPosition, sceneObjInfo.obj.lastSavedRotation, sceneObjInfo.obj.lastSavedScale, sceneObjInfo.obj.ID);
         }
@@ -66,7 +69,7 @@ public class ObjectDatabaseUpdater : MonoBehaviour {
         {
             creatingObject = true;
             database = GameObject.Find("LoadScene").GetComponent<DatabaseController>();
-            database.SaveObject(objectType, objectType2, transform.position, transform.rotation.eulerAngles, transform.lossyScale, SetSceneObject, textureBytes , extension);
+            database.SaveObject(objectType, objectType2, transform.position, transform.rotation.eulerAngles, transform.lossyScale, SetSceneObject, textureBytes , extension, additionalTextureBytes);
         }
     }
 
@@ -93,7 +96,25 @@ public class ObjectDatabaseUpdater : MonoBehaviour {
         {
             LoadMovie();
         }
+        else if (type == ObjectsTypes.object3D)
+        {
+            Load3DObjectBytes();
+            extension = additionalData;
+        }
         CreateSceneObject(); 
+    }
+
+    public void Load3DObjectBytes()
+    {
+        if (objectType2 != "")
+        {
+            textureBytes = File.ReadAllBytes(objectType2);
+        }
+
+        if (objectType3 != "")
+        {
+            additionalTextureBytes = File.ReadAllBytes(objectType3);
+        }
     }
 
 
