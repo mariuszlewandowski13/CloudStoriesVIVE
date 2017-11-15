@@ -71,11 +71,136 @@ public sealed class FastObjImporter
         return mesh;
     }
 
+    public Mesh ImportFile(byte[] bytes)
+    {
+        triangles = new List<int>();
+        vertices = new List<Vector3>();
+        uv = new List<Vector2>();
+        normals = new List<Vector3>();
+        faceData = new List<Vector3Int>();
+        intArray = new List<int>();
+
+        LoadMeshData(bytes);
+
+        Vector3[] newVerts = new Vector3[faceData.Count];
+        Vector2[] newUVs = new Vector2[faceData.Count];
+        Vector3[] newNormals = new Vector3[faceData.Count];
+
+        /* The following foreach loops through the facedata and assigns the appropriate vertex, uv, or normal
+         * for the appropriate Unity mesh array.
+         */
+        for (int i = 0; i < faceData.Count; i++)
+        {
+            newVerts[i] = vertices[faceData[i].x - 1];
+            if (faceData[i].y >= 1)
+                newUVs[i] = uv[faceData[i].y - 1];
+
+            if (faceData[i].z >= 1)
+                newNormals[i] = normals[faceData[i].z - 1];
+        }
+
+        Mesh mesh = new Mesh();
+
+        mesh.vertices = newVerts;
+        mesh.uv = newUVs;
+        mesh.normals = newNormals;
+        mesh.triangles = triangles.ToArray();
+
+        mesh.RecalculateBounds();
+
+        return mesh;
+    }
+
     private void LoadMeshData(string fileName)
     {
 
         StringBuilder sb = new StringBuilder();
         string text = File.ReadAllText(fileName);
+        int start = 0;
+        string objectName = null;
+        int faceDataCount = 0;
+
+        StringBuilder sbFloat = new StringBuilder();
+
+        for (int i = 0; i < text.Length; i++)
+        {
+            if (text[i] == '\n')
+            {
+                sb.Remove(0, sb.Length);
+
+                // Start +1 for whitespace '\n'
+                sb.Append(text, start + 1, i - start);
+                start = i;
+
+                if (sb[0] == 'o' && sb[1] == ' ')
+                {
+                    sbFloat.Remove(0, sbFloat.Length);
+                    int j = 2;
+                    while (j < sb.Length)
+                    {
+                        objectName += sb[j];
+                        j++;
+                    }
+                }
+                else if (sb[0] == 'v' && sb[1] == ' ') // Vertices
+                {
+                    int splitStart = 2;
+
+                    vertices.Add(new Vector3(GetFloat(sb, ref splitStart, ref sbFloat),
+                        GetFloat(sb, ref splitStart, ref sbFloat), GetFloat(sb, ref splitStart, ref sbFloat)));
+                }
+                else if (sb[0] == 'v' && sb[1] == 't' && sb[2] == ' ') // UV
+                {
+                    int splitStart = 3;
+
+                    uv.Add(new Vector2(GetFloat(sb, ref splitStart, ref sbFloat),
+                        GetFloat(sb, ref splitStart, ref sbFloat)));
+                }
+                else if (sb[0] == 'v' && sb[1] == 'n' && sb[2] == ' ') // Normals
+                {
+                    int splitStart = 3;
+
+                    normals.Add(new Vector3(GetFloat(sb, ref splitStart, ref sbFloat),
+                        GetFloat(sb, ref splitStart, ref sbFloat), GetFloat(sb, ref splitStart, ref sbFloat)));
+                }
+                else if (sb[0] == 'f' && sb[1] == ' ')
+                {
+                    int splitStart = 2;
+
+                    int j = 1;
+                    intArray.Clear();
+                    int info = 0;
+                    // Add faceData, a face can contain multiple triangles, facedata is stored in following order vert, uv, normal. If uv or normal are / set it to a 0
+                    while (splitStart < sb.Length && char.IsDigit(sb[splitStart]))
+                    {
+                        faceData.Add(new Vector3Int(GetInt(sb, ref splitStart, ref sbFloat),
+                            GetInt(sb, ref splitStart, ref sbFloat), GetInt(sb, ref splitStart, ref sbFloat)));
+                        j++;
+
+                        intArray.Add(faceDataCount);
+                        faceDataCount++;
+                    }
+
+                    info += j;
+                    j = 1;
+                    while (j + 2 < info) //Create triangles out of the face data.  There will generally be more than 1 triangle per face.
+                    {
+                        triangles.Add(intArray[0]);
+                        triangles.Add(intArray[j]);
+                        triangles.Add(intArray[j + 1]);
+
+                        j++;
+                    }
+                }
+            }
+        }
+    }
+
+    private void LoadMeshData(byte[] bytes)
+    {
+
+        StringBuilder sb = new StringBuilder();
+        string text = System.Text.Encoding.UTF8.GetString(bytes); ;
         int start = 0;
         string objectName = null;
         int faceDataCount = 0;

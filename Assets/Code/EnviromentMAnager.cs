@@ -11,7 +11,9 @@ public class EnviromentMAnager : MonoBehaviour {
     public GameObject object3DPrefab;
 
     public GameObject[] scaleHandlers;
+    public GameObject[] objectsPrefabs;
 
+    public GameObject[] shapesPrefabs;
 
     private GameObject layoutObject;
     private GameObject sceneObjects;

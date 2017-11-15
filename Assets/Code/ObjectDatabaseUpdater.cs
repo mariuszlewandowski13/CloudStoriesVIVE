@@ -28,8 +28,14 @@ public class ObjectDatabaseUpdater : MonoBehaviour {
 
     private bool existing;
 
-    void Start () {
+    private void Awake()
+    {
+
         sceneObjInfo = GetComponent<SceneObjectInfo>();
+    }
+
+    void Start () {
+        
         existing = true;
         InvokeRepeating("UpdateInfo",2.0f, 2.0f);
     }
@@ -48,7 +54,9 @@ public class ObjectDatabaseUpdater : MonoBehaviour {
     public void SetSceneObject(SceneObject newSceneObj)
     {
         sceneObjInfo.obj = newSceneObj;
+        database = GameObject.Find("LoadScene").GetComponent<DatabaseController>();
         creatingObject = false;
+        existing = true;
     }
 
     public void UpdateObjectPosRot()

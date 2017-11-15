@@ -11,7 +11,6 @@ public static class ApplicationStaticData
 
     #region Public Properties
 
-
     static public Color objectsHighligthing = new Color(1f, 0f, 0f, 0.1f);
     static public Color objectsHighligthingNormalColor = new Color(1f, 1f, 1f, 0.1f);
 
@@ -20,6 +19,7 @@ public static class ApplicationStaticData
 
     public static List<int> layoutsNumber;
 
+    public static int projectToLoad = 10 ;
     public static ProjectObject actualProject;
 
     public static List<ImagesInfo> shapesInfos;

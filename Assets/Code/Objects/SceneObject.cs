@@ -20,7 +20,7 @@ public class SceneObject   {
     public ObjectsTypes type;
     public string path;
 
-    protected SceneObject(int id, Vector3 pos, Vector3 rot, Vector3 scale, ObjectsTypes type, string path)
+    public SceneObject(int id, Vector3 pos, Vector3 rot, Vector3 scale, ObjectsTypes type, string path)
     {
         ID = id;
         lastSavedPosition = pos;

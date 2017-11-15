@@ -6,188 +6,134 @@ using System.Collections;
 using System.Threading;
 using System.Net;
 using System.Runtime.InteropServices;
-
+using System.IO;
 #endregion
 
 
 [RequireComponent(typeof(Renderer))]
 [Serializable]
-public class ImageScript : MonoBehaviour {
+public class ImageScript : MonoBehaviour
+{
 
     #region Public Properties
 
-    public ImageObject imageObject;
+    public string imagePath;
     private bool textureReady;
-    private bool colorArrayReady;
 
-    private Color32 [] colorArray;
+    private Texture2D tex;
+
 
     #endregion
 
     #region Methods
 
-    void Start()
-    {
-        gameObject.GetComponent<Renderer>().sortingLayerName = "PhysicalObjectsSortingLayer";
-    }
-
     private void LoadImgAsMaterial()
     {
-        StartCoroutine(LoadTexture(imageObject.imgName, imageObject.loadType));
+        LoadTexture();
     }
 
     void Update()
     {
         if (textureReady)
         {
-           // Debug.Log("asdasd");
-            GetComponent<Renderer>().material.mainTexture = imageObject.texture;
+            GetComponent<Renderer>().material.mainTexture = tex;
             textureReady = false;
-        }
-
-        if (colorArrayReady)
-        {
-            imageObject.texture.SetPixels32(colorArray);
-            colorArrayReady = false;
-            textureReady = true;
+            Destroy(this);
         }
 
     }
 
-    private void SetScaleRatio()
+
+
+    public void SetImagePath(string path)
     {
-        Vector3 scale = imageObject.GetSavedScale();
-        if (scale != new Vector3())
+        imagePath = path;
+        LoadImgAsMaterial();
+    }
+
+    void LoadTexture()
+    {
+        if (tex == null)
         {
-            gameObject.transform.localScale = scale;
+            tex = new Texture2D(2, 2);
+            // Create a request for the URL.   
+            WebRequest request = WebRequest.Create(imagePath);
+            // If required by the server, set the credentials.  
+            request.Credentials = CredentialCache.DefaultCredentials;
+            // Get the response.  
+            WebResponse response = request.GetResponse();
+            // Display the status.  
+            Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+            // Get the stream containing content returned by the server.  
+            Stream dataStream = response.GetResponseStream();
+
+            tex.LoadImage(StreamToByteArray(dataStream));
+            // Read the content.  
+
+            textureReady = true;
+
+            Debug.Log(imagePath);
+
         }
         else
         {
-            float heightScale = transform.localScale.z;
-            heightScale *= imageObject.realRatio;
-            heightScale -= transform.localScale.z;
-            transform.localScale += new Vector3(heightScale, 0.0f, 0.0f);
-        }
-        
-    }
-
-    
-    public void SetImageObject(ImageObject img)
-    {
-        this.imageObject = new ImageObject(img);
-        LoadImgAsMaterial();
-        //SetScaleRatio();
-    }
-
-    public void LoadFromImageObject()
-    {
-        if (imageObject != null)
-        {
-            transform.position = imageObject.GetSavedPosition();
-            transform.rotation = imageObject.GetSavedRotation();
-            transform.localScale = imageObject.GetSavedScale();
-        }
-    }
-
-
-
-
-    IEnumerator LoadTexture(string name, LoadingType loadType)
-    {
-        if (imageObject.texture == null)
-        {
-            imageObject.texture = new Texture2D(2, 2);
-            if (loadType == LoadingType.remote)
-            {
-                WWW www = new WWW(name);
-                yield return www;
-
-               // Debug.Log(name);
-
-                if (www.error != null)
-                {
-                   // ObjectSpawnerScript.DestroyGameObject(gameObject, true);
-                }
-                else {
-                      try
-                      {
-                        www.LoadImageIntoTexture(imageObject.texture);
-                        textureReady = true;
-                        //Thread th = new Thread(LoadTextureFromUrl);
-                        //th.Start();
-                    }
-                      catch (Exception e)
-                      {
-                           // ObjectSpawnerScript.DestroyGameObject(gameObject);
-                            Debug.Log(e);
-                      }
-                }
-                www.Dispose();         
-            }
-            else if (loadType == LoadingType.local)
-            {
-                Texture2D tex = new Texture2D(2, 2);
-                byte[] bytesTex = imageObject.LoadImgFromBytes();
-                
-                if (bytesTex == null)
-                {
-                  //  ObjectSpawnerScript.DestroyGameObject(gameObject);
-                }
-                else {
-                    tex.LoadImage(bytesTex);
-                    imageObject.texture = tex;
-                    textureReady = true;
-                }
-                
-            }
-        }
-        else {
             textureReady = true;
         }
-       
+
     }
 
-    void LoadTextureFromUrl()
+    public static byte[] StreamToByteArray(Stream stream)
     {
-        var webClient = new WebClient();
-        byte[] imageBytes = webClient.DownloadData(imageObject.imgName);
-        
-        colorArray = ByteArrayToColor32(imageBytes);
-        
-        //for (var i = 0; i < imageBytes.Length; i += 4)
-        //{
-        //    Color color = new Color(imageBytes[i + 0], imageBytes[i + 1], imageBytes[i + 2], imageBytes[i + 3]);
-        //    colorArray[i / 4] = color;
-        //}
+        long originalPosition = 0;
 
-        colorArrayReady = true;
-    }
+        if (stream.CanSeek)
+        {
+            originalPosition = stream.Position;
+            stream.Position = 0;
+        }
 
-    private static Color32[] ByteArrayToColor32(byte[] colors)
-    {
-        if (colors == null || colors.Length == 0)
-            return null;
-
-        int lengthOfColor32 = Marshal.SizeOf(typeof(Color32));
-        int length = colors.Length / lengthOfColor32;
-        
-        Color32[] bytes = new Color32[length];
-
-        GCHandle handle = default(GCHandle);
         try
         {
-            handle = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-            IntPtr ptr = handle.AddrOfPinnedObject();
-            Marshal.Copy(colors, 0, ptr, length);
+            byte[] readBuffer = new byte[4096];
+
+            int totalBytesRead = 0;
+            int bytesRead;
+
+            while ((bytesRead = stream.Read(readBuffer, totalBytesRead, readBuffer.Length - totalBytesRead)) > 0)
+            {
+                totalBytesRead += bytesRead;
+
+                if (totalBytesRead == readBuffer.Length)
+                {
+                    int nextByte = stream.ReadByte();
+                    if (nextByte != -1)
+                    {
+                        byte[] temp = new byte[readBuffer.Length * 2];
+                        Buffer.BlockCopy(readBuffer, 0, temp, 0, readBuffer.Length);
+                        Buffer.SetByte(temp, totalBytesRead, (byte)nextByte);
+                        readBuffer = temp;
+                        totalBytesRead++;
+                    }
+                }
+            }
+
+            byte[] buffer = readBuffer;
+            if (readBuffer.Length != totalBytesRead)
+            {
+                buffer = new byte[totalBytesRead];
+                Buffer.BlockCopy(readBuffer, 0, buffer, 0, totalBytesRead);
+            }
+            return buffer;
         }
         finally
         {
-            if (handle != default(GCHandle))
-                handle.Free();
+            if (stream.CanSeek)
+            {
+                stream.Position = originalPosition;
+            }
         }
-
-        return bytes;
     }
+
 
     #endregion
 }
