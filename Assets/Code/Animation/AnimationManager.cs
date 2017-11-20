@@ -25,10 +25,10 @@ public class ObjectAnimationState
 public class AnimationManager : MonoBehaviour {
 
 
-    public AnimGUIButton playButton;
-    public AnimGUIButton pauseButton;
-    public AnimGUIButton stopButton;
-    public AnimGUIButton recordButton;
+    public GUIButton playButton;
+    public GUIButton pauseButton;
+    public GUIButton stopButton;
+    public GUIButton recordButton;
 
     public ObjectAnimationScript actualObject;
 

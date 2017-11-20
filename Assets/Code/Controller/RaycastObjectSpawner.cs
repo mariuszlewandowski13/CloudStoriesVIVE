@@ -97,6 +97,41 @@ public class RaycastObjectSpawner : RaycastBase {
 
     }
 
+    public void StartSpawning3DObject(Vector3 pos, Vector3 scale, Vector3 rotation,  string path, string type3 = "")
+    {
+
+        spawning = true;
+        raycasterLength = Vector3.Distance(pos, transform.position);
+
+
+        GameObject prefab = null;
+
+        int number;
+        if (int.TryParse(path, out number))
+        {
+            prefab = GameObject.Find("SCENE").GetComponent<EnviromentMAnager>().objectsPrefabs[number];
+        }
+
+
+        spawnedObject = enviroment.GetComponent<EnviromentMAnager>().SpawnObject(prefab, pos, scale, ObjectsTypes.object3D, Quaternion.Euler(rotation));
+
+
+        spawnedObjectType = ObjectsTypes.object3D;
+
+        spawnedObject.GetComponent<ObjectDatabaseUpdater>().SetTypesAndCreate(ObjectsTypes.object3D, path, type3);
+
+        GetComponent<ControllerRaycastScript>().isActive = false;
+
+        rotationCenter = new GameObject();
+        rotationCenter.transform.position = transform.position;
+        rotationCenter.transform.rotation = transform.rotation;
+        rotationCenter.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+
+        spawningObjectPrevTransform = spawnedObject.transform.parent;
+        spawnedObject.transform.parent = rotationCenter.transform;
+
+    }
+
     private void Update()
     {
         if (spawning)

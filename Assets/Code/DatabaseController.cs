@@ -61,6 +61,15 @@ public class DatabaseController : MonoBehaviour {
         StartCoroutine(request(w, method));
     }
 
+    public void CreateScene(ResultMethod3 method)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("projectID", ApplicationStaticData.actualProject.id);
+
+        WWW w = new WWW(ApplicationStaticData.serverScriptsPath + "CreateProjectScene.php", form);
+        StartCoroutine(request(w, method));
+    }
+
     public void SaveLayout(ResultMethod3 method)
     {
         WWWForm form = new WWWForm();
@@ -114,6 +123,7 @@ public class DatabaseController : MonoBehaviour {
         form.AddField("sizeZ", size.z.ToString());
 
         form.AddField("projectID", ApplicationStaticData.actualProject.id);
+        form.AddField("sceneID", ApplicationStaticData.actualProject.actualScene);
 
         if (objectType != ObjectsTypes.object3D && bytes != null)
         {
@@ -160,7 +170,7 @@ public class DatabaseController : MonoBehaviour {
         form.AddField("sizeZ", size.z.ToString());
 
         form.AddField("projectID", ApplicationStaticData.actualProject.id);
-
+        form.AddField("sceneID", ApplicationStaticData.actualProject.actualScene);
 
         WWW w = new WWW(ApplicationStaticData.serverScriptsPath + "UpdateObject.php", form);
         StartCoroutine(request(w));
@@ -171,6 +181,7 @@ public class DatabaseController : MonoBehaviour {
         WWWForm form = new WWWForm();
         form.AddField("ID", ID);
         form.AddField("projectID", ApplicationStaticData.actualProject.id);
+        form.AddField("sceneID", ApplicationStaticData.actualProject.actualScene);
         WWW w = new WWW(ApplicationStaticData.serverScriptsPath + "DeleteObject.php", form);
         StartCoroutine(request(w));
     }

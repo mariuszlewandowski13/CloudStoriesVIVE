@@ -58,11 +58,11 @@ public class ImageMoveScript : MovingScript
 
     private void OnTriggerDown(GameObject controller)
     {
-       
-           
+        GetComponent<ObjectInteractionScript>().SetIsSelected(true);
+        if (GetComponent<SceneObjectInfo>() == null || !GetComponent<SceneObjectInfo>().isTransformLocked)
+        {
             controller.GetComponent<ControllerScript>().OnTriggerUp += OnTriggerUp;
-            
-            GetComponent<ObjectInteractionScript>().SetIsSelected(true);
+
 
             controller.GetComponent<ControllerScript>().OnControllerMove += OnControllerMove;
             rotationParent = controller.GetComponent<ControllerScript>().rotationCenter;
@@ -72,10 +72,11 @@ public class ImageMoveScript : MovingScript
             rotationParent.transform.rotation = controller.transform.rotation;
             prevParent = gameObject.transform.parent;
 
-                gameObject.transform.parent = rotationParent.transform;
- 
+            gameObject.transform.parent = rotationParent.transform;
 
-            if (GetComponent<Rigidbody>() != null) Destroy(gameObject.GetComponent<Rigidbody>());
+        }
+           
+            
         
     }
     private void OnTriggerUp(GameObject controller)
@@ -84,7 +85,7 @@ public class ImageMoveScript : MovingScript
         controller.GetComponent<ControllerScript>().OnControllerMove -= OnControllerMove;
         GetComponent<ObjectInteractionScript>().SetIsSelected(false);
         gameObject.transform.parent = prevParent;
-        CheckAndSetToDestroy(gameObject);
+       // CheckAndSetToDestroy(gameObject);
         
     }
 

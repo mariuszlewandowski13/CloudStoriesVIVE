@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PointableGUIButton))]
-public class AnimationActivateObjBtn : AnimGUIButton, IClickable
+public class AnimationActivateObjBtn : GUIButton, IClickable
 {
 
     public AnimationActivateObjBtn objectToActivate;

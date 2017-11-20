@@ -86,13 +86,16 @@ public class TimelineScript : MonoBehaviour {
 
     private void ShowTimeLines()
     {
-        //foreach (TimelineAnimatedObjectsData data in animatedObjectsTimeLines)
-        //{
-        //    data.animatedObjectTimeline.transform.position = startPosition;
-        //    startPosition.y -= posYChange;
+        Vector3 scale = timelineObjectPrefab.transform.localScale;
+        scale.y = scale.y / animatedObjectsTimeLines.Count;
 
-        //    data.animatedObjectTimeline.transform.localScale = timelineObjectPrefab
-        //}
+        foreach (TimelineAnimatedObjectsData data in animatedObjectsTimeLines)
+        {
+            data.animatedObjectTimeline.transform.position = startPosition;
+            startPosition.y -= posYChange;
+
+            data.animatedObjectTimeline.transform.localScale = scale;
+        }
     }
 
 

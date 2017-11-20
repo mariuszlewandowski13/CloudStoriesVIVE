@@ -90,7 +90,7 @@ public class ObjectDatabaseUpdater : MonoBehaviour {
         }
     }
 
-    public void SetTypesAndCreate(ObjectsTypes type, string type2, string type3, string additionalData)
+    public void SetTypesAndCreate(ObjectsTypes type, string type2, string type3, string additionalData = "")
     {
         objectType = type;
         objectType2 = type2;
@@ -114,7 +114,8 @@ public class ObjectDatabaseUpdater : MonoBehaviour {
 
     public void Load3DObjectBytes()
     {
-        if (objectType2 != "")
+        int number;
+        if (objectType2 != "" && !int.TryParse(objectType2, out number))
         {
             textureBytes = File.ReadAllBytes(objectType2);
         }

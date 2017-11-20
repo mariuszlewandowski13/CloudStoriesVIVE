@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [RequireComponent(typeof(PointableGUIButton))]
 public class Object3DSpawningButton : MonoBehaviour, IClickable {
@@ -15,7 +16,15 @@ public class Object3DSpawningButton : MonoBehaviour, IClickable {
 
     public virtual void Clicked(Vector3 pos, GameObject clickingObject)
     {
-        clickingObject.GetComponent<RaycastObjectSpawner>().StartSpawning3DObject(pos, transform.lossyScale, transform.rotation.eulerAngles, object3DInfo,  basePath);
+        try {
+            clickingObject.GetComponent<RaycastObjectSpawner>().StartSpawning3DObject(pos, transform.lossyScale, transform.rotation.eulerAngles, object3DInfo, basePath);
+        }
+        catch(Exception e)
+        {
+            clickingObject.GetComponent<RaycastObjectSpawner>().StartSpawning3DObject(pos, transform.lossyScale, transform.rotation.eulerAngles, basePath);
+        }
+
+        
     }
 
 

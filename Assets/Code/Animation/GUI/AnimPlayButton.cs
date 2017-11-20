@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimPlayButton : AnimGUIButton, IClickable
+[RequireComponent(typeof(PointableGUIButton))]
+public class AnimPlayButton : GUIButton, IClickable
 {
 
     public AnimationManager animManager;

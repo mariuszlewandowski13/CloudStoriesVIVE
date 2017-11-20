@@ -15,9 +15,57 @@ public class CreateProjectScript : MonoBehaviour {
 
     public bool updating;
 
+    public LoadProjectsScenes scenesMenu;
+
     private EnviromentMAnager envirMan;
 
+    private CreateNewSceneButton newScenBtn;
+
+    public void CreateNewScene(CreateNewSceneButton newSceneBtn)
+    {
+        newScenBtn = newSceneBtn;
+        GetComponent<DatabaseController>().CreateScene(LoadNewSceneData);
+
+    }
+
+    private void LoadNewSceneData(int id)
+    {
+        ApplicationStaticData.actualProject.projectScenesNumbers.Add(id);
+        ApplicationStaticData.actualProject.actualScene = id;
+        ClearSceneObjects();
+        if (GameObject.Find("GUI") != null)
+        {
+            GameObject.Find("GUI").GetComponent<GUIManager>().SetSceneID(id);
+        }
+        if (newScenBtn != null)
+        {
+            newScenBtn.ActivateObject();
+        }
+
+        if (scenesMenu.gameObject.activeSelf)
+        {
+            scenesMenu.LoadScenes();
+        }
+        
+    }
+
+    public  void LoadNewScene(int sceneNumber)
+    {
+        if (ApplicationStaticData.actualProject.projectScenesNumbers.Contains(sceneNumber) && ApplicationStaticData.actualProject.actualScene != sceneNumber)
+        {
+            ApplicationStaticData.actualProject.actualScene = sceneNumber;
+            Download();
+        }
+
+        if (GameObject.Find("GUI") != null)
+        {
+            GameObject.Find("GUI").GetComponent<GUIManager>().SetSceneID(sceneNumber);
+        }
+
+    }
+
 	void Start () {
+        envirMan = GameObject.Find("SCENE").GetComponent<EnviromentMAnager>();
         if (ApplicationStaticData.projectToLoad < 0 )
         {
             CreateProject();
@@ -27,8 +75,9 @@ public class CreateProjectScript : MonoBehaviour {
             if (GameObject.Find("GUI") != null)
             {
                 GameObject.Find("GUI").GetComponent<GUIManager>().SetProjectID(ApplicationStaticData.projectToLoad);
+                
             }
-            envirMan = GameObject.Find("SCENE").GetComponent<EnviromentMAnager>();
+            
             LoadProject();
         }
      
@@ -42,23 +91,32 @@ public class CreateProjectScript : MonoBehaviour {
     private void GetNewProjectInfo(ProjectObject proj)
     {
         ApplicationStaticData.actualProject = proj;
+        ApplicationStaticData.actualProject.projectScenesNumbers.Add(1);
+
         if (GameObject.Find("GUI") != null)
         {
             GameObject.Find("GUI").GetComponent<GUIManager>().SetProjectID(proj.id);
+            GameObject.Find("GUI").GetComponent<GUIManager>().SetSceneID(1);
         }
     }
 
     private void LoadProject()
     {
         updating = true;
+        LoadProjectData();
+        if (ApplicationStaticData.actualProject.projectScenesNumbers.Count > 0)
+        {
+            ApplicationStaticData.actualProject.actualScene = ApplicationStaticData.actualProject.projectScenesNumbers[0];
+            GameObject.Find("GUI").GetComponent<GUIManager>().SetSceneID(ApplicationStaticData.actualProject.actualScene);
+        }
         Download();
     }
 
-    void Download()
+    void LoadProjectData()
     {
         // Create a request for the URL.   
         WebRequest request = WebRequest.Create(
-          "http://vrowser.e-kei.pl/CloudStories/" + "GetProjectData.php?ID=" + ApplicationStaticData.actualProject.id.ToString());
+          "http://vrowser.e-kei.pl/CloudStories/" + "GetProjectData.php?projectID=" + ApplicationStaticData.actualProject.id.ToString());
         // If required by the server, set the credentials.  
         request.Credentials = CredentialCache.DefaultCredentials;
         // Get the response.  
@@ -76,6 +134,52 @@ public class CreateProjectScript : MonoBehaviour {
         foreach (string row in msg)
         {
             res = row.Split(new string[] { "#####" }, StringSplitOptions.None);
+            if (res.Length > 0)
+            {
+                int number;
+                if (int.TryParse(res[0], out number))
+                {
+                    ApplicationStaticData.actualProject.projectScenesNumbers.Add(number);
+                }
+
+               
+            }
+        }
+
+        // Display the content.  
+        Debug.Log(responseFromServer);
+        // Clean up the streams and the response.  
+        reader.Close();
+        response.Close();
+    }
+
+    void Download()
+    {
+        
+
+        // Create a request for the URL.   
+        WebRequest request = WebRequest.Create(
+          "http://vrowser.e-kei.pl/CloudStories/" + "GetSceneData.php?projectID=" + ApplicationStaticData.actualProject.id.ToString() + "&sceneID=" + ApplicationStaticData.actualProject.actualScene.ToString());
+        // If required by the server, set the credentials.  
+        request.Credentials = CredentialCache.DefaultCredentials;
+        // Get the response.  
+        WebResponse response = request.GetResponse();
+        // Display the status.  
+        Console.WriteLine(((HttpWebResponse)response).StatusDescription);
+        // Get the stream containing content returned by the server.  
+        Stream dataStream = response.GetResponseStream();
+        // Open the stream using a StreamReader for easy access.  
+        StreamReader reader = new StreamReader(dataStream);
+        // Read the content.  
+        string responseFromServer = reader.ReadToEnd();
+        string[] res;
+        string[] msg = responseFromServer.Split(new string[] { "@@@@@" }, StringSplitOptions.None);
+
+        ClearSceneObjects();
+
+        foreach (string row in msg)
+        {
+            res = row.Split(new string[] { "#####" }, StringSplitOptions.None);
             if (res.Length > 1)
             {
                 ProcessLine(res);
@@ -89,6 +193,17 @@ public class CreateProjectScript : MonoBehaviour {
         response.Close();
 
         updating = false;
+    }
+
+    private void ClearSceneObjects()
+    {
+        if (spawnedObjectsParent != null)
+        {
+            foreach (Transform child in spawnedObjectsParent.transform)
+            {
+                Destroy(child.gameObject);
+            }
+        }
     }
 
     private void ProcessLine(string[] line)
@@ -122,9 +237,6 @@ public class CreateProjectScript : MonoBehaviour {
             newObject.transform.parent = spawnedObjectsParent.transform;
                 newObject.transform.localPosition = pos;
                 newObject.transform.localScale = size;
-
-            
-
 
             CreateScaleHandler(objType, newObject.transform.position, newObject.transform.rotation, newObject, false);
 

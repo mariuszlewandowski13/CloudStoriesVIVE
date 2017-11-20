@@ -19,7 +19,7 @@ public static class ApplicationStaticData
 
     public static List<int> layoutsNumber;
 
-    public static int projectToLoad = 10 ;
+    public static int projectToLoad = -1;
     public static ProjectObject actualProject;
 
     public static List<ImagesInfo> shapesInfos;

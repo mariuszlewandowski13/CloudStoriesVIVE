@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimStopButton : AnimGUIButton, IClickable {
+[RequireComponent(typeof(PointableGUIButton))]
+public class AnimStopButton : GUIButton, IClickable {
 
     public AnimationManager animManager;
 

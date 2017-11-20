@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimGUIButton : MonoBehaviour {
+public class GUIButton : MonoBehaviour {
 
     protected bool isActive;
 

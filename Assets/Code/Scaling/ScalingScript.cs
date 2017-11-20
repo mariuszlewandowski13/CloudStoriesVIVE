@@ -78,24 +78,28 @@ public class ScalingScript : MonoBehaviour {
     {
         if ((controller.GetComponent<ControllerScript>().secondController == null || controller.GetComponent<ControllerScript>().secondController.GetComponent<ControllerScript>().pickup != mainObject))
         {
-            controller.GetComponent<ControllerRaycastScript>().isActive = false;
+            if (mainObject.GetComponent<SceneObjectInfo>() == null || !mainObject.GetComponent<SceneObjectInfo>().isTransformLocked)
+            {
 
-            
-            GetComponent<ObjectInteractionScript>().SetIsSelected(true);
-            tempObject = parent.GetComponent<ScaleHandlerScript>().AddNewResizingObject(gameObject);
-            
-            selected = true;
-            SetColor();
-            controllerPrevPosition = controller.transform.position;
-            
-            gameObject.transform.parent = tempObject.transform;
-            
+                controller.GetComponent<ControllerRaycastScript>().isActive = false;
 
-            topMainScale = referencePoint.transform.localScale;
-            
-            CalculateDirection();
-            controller.GetComponent<ControllerScript>().OnTriggerUp += OnTriggerUp;
-            controller.GetComponent<ControllerScript>().OnControllerMove += OnControllerMove;
+
+                GetComponent<ObjectInteractionScript>().SetIsSelected(true);
+                tempObject = parent.GetComponent<ScaleHandlerScript>().AddNewResizingObject(gameObject);
+
+                selected = true;
+                SetColor();
+                controllerPrevPosition = controller.transform.position;
+
+                gameObject.transform.parent = tempObject.transform;
+
+
+                topMainScale = referencePoint.transform.localScale;
+
+                CalculateDirection();
+                controller.GetComponent<ControllerScript>().OnTriggerUp += OnTriggerUp;
+                controller.GetComponent<ControllerScript>().OnControllerMove += OnControllerMove;
+            }
         }
     }
 

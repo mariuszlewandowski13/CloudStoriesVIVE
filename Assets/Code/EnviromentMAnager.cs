@@ -29,7 +29,7 @@ public class EnviromentMAnager : MonoBehaviour {
 
         GameObject newObject = null;
 
-        if (objectType == ObjectsTypes.object3D)
+        if (objectType == ObjectsTypes.object3D && objToSpawn == null)
         {
             newObject = Instantiate(object3DPrefab, position, rotation);
         }

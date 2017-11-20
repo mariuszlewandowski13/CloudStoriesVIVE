@@ -67,11 +67,9 @@ public class SelectingObjectsScript : MonoBehaviour {
          if (guiInfoShown)
         {
             guiInfoShown = false;
-            GameObject.Find("GUI").GetComponent<GUIManager>().RemoveObjectInfo();
-            if (GetComponent<ObjectAnimationScript>() != null)
-            {
-                GameObject.Find("AnimationManager").GetComponent<AnimationManager>().RemoveActualAnimatedObject();
-            }
+            GameObject.Find("GUI").GetComponent<GUIManager>().RemoveActualSelectedGameObject();
+
+
         }
 
         foreach (Transform child in transform)
@@ -146,13 +144,7 @@ public class SelectingObjectsScript : MonoBehaviour {
         if (!guiInfoShown && GameObject.Find("GUI") != null && GameObject.Find("GUI").GetComponent<GUIManager>() != null)
         {
             guiInfoShown = true;
-            GameObject.Find("GUI").GetComponent<GUIManager>().SetSelectedObjectInfo(gameObject.name);
-            if (GetComponent<ObjectAnimationScript>() != null && GameObject.Find("AnimationManager") != null)
-            {
-                GameObject.Find("AnimationManager").GetComponent<AnimationManager>().SetActualAnimatedObject(GetComponent<ObjectAnimationScript>());
-                
-            }
-           
+            GameObject.Find("GUI").GetComponent<GUIManager>().SetActualSelectedGameObject(gameObject);
         }
 
 

@@ -34,31 +34,35 @@ public class RaycastMoveScript : RaycastBase{
 
     public void StartMoving(GameObject objectToMove, Vector3 pos)
     {
+        controller.SetSelected(objectToMove);
+        if (objectToMove.GetComponent<SceneObjectInfo>() == null || !objectToMove.GetComponent<SceneObjectInfo>().isTransformLocked)
+        {
 
-        moving = true;
+            moving = true;
 
-        movingObject = objectToMove;
-        GetComponent<ControllerScript>().SetSelected(movingObject);
+            movingObject = objectToMove;
+            
 
-        raycasterLength = Vector3.Distance(pos, transform.position);
-
-
-        rotationCenter = new GameObject();
-        rotationCenter.transform.position = movingObject.transform.position;
-        rotationCenter.transform.rotation = transform.rotation;
-        rotationCenter.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-        // rotationCenter.transform.LookAt(gameObject.transform);
-
-        dragOffset = pos - movingObject.transform.position;
-
-       movingObejctPreviousParent = movingObject.transform.parent;
-
-        movingObject.transform.parent = rotationCenter.transform;
+            raycasterLength = Vector3.Distance(pos, transform.position);
 
 
-        GetComponent<ControllerRaycastScript>().isActive = false;
+            rotationCenter = new GameObject();
+            rotationCenter.transform.position = movingObject.transform.position;
+            rotationCenter.transform.rotation = transform.rotation;
+            rotationCenter.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            // rotationCenter.transform.LookAt(gameObject.transform);
 
-        controllerFirstPosition = controllerSecondPosition = transform.position;
+            dragOffset = pos - movingObject.transform.position;
+
+            movingObejctPreviousParent = movingObject.transform.parent;
+
+            movingObject.transform.parent = rotationCenter.transform;
+
+
+            GetComponent<ControllerRaycastScript>().isActive = false;
+
+            controllerFirstPosition = controllerSecondPosition = transform.position;
+        }
     }
 
     private void Update()
@@ -106,7 +110,7 @@ public class RaycastMoveScript : RaycastBase{
         moving = false;
         movingObject.transform.parent = movingObejctPreviousParent;
 
-        CheckAndSetToDestroy(movingObject);
+        //CheckAndSetToDestroy(movingObject);
 
         movingObject = null;
         movingObejctPreviousParent = null;

@@ -7,6 +7,9 @@ using System.IO;
 public class Objects3DMenu : GuiMenu
 {
 
+    public EnviromentMAnager envir;
+    private int firstPrefabToLoad = 7;
+
      float emptySize = 0.2f;
 
     private void Start()
@@ -20,13 +23,14 @@ public class Objects3DMenu : GuiMenu
 
     private void CreateIcons()
     {
+
         ClearIcons();
 
         GameObject newObject = null;
-
+        int i = 0;
         if (ApplicationStaticData.objects3DInfos != null)
         {
-            int i = 0;
+            
             foreach (Object3DInfo info in ApplicationStaticData.objects3DInfos)
             {
                 
@@ -61,18 +65,12 @@ public class Objects3DMenu : GuiMenu
                         newObject.GetComponent<Renderer>().material.mainTexture = info.texturesInfos[0].tex;
                     }
 
-                    if (i == 1 || i == ApplicationStaticData.gifsInfos.Count)
+                    if (i == 1)
                     {
                         CheckRaycasting raycasting = newObject.AddComponent<CheckRaycasting>();
                         raycasting.raycastingGameObject = panel;
-                        if (i == 1)
-                        {
                             firstIcon = raycasting;
-                        }
-                        else
-                        {
-                            lastIcon = raycasting;
-                        }
+                        
 
                     }
 
@@ -105,6 +103,44 @@ public class Objects3DMenu : GuiMenu
                 }
 
 
+            }
+        }
+
+        for (int j = firstPrefabToLoad; j < envir.objectsPrefabs.Length; j++)
+        {
+            newObject = Instantiate(envir.objectsPrefabs[j], transform.position, envir.objectsPrefabs[j].transform.rotation);
+
+            if (j + 1 == envir.objectsPrefabs.Length)
+            {
+                CheckRaycasting raycasting = newObject.AddComponent<CheckRaycasting>();
+                raycasting.raycastingGameObject = panel;
+                    lastIcon = raycasting;
+
+            }
+
+            Destroy(newObject.GetComponent<SceneObjectRaycastMovingScript>());
+
+
+            newObject.AddComponent<Object3DSpawningButton>();
+
+            newObject.GetComponent<Object3DSpawningButton>().basePath = j.ToString();
+            newObject.GetComponent<Object3DSpawningButton>().objectToSpawn = envir.objectsPrefabs[j];
+            newObject.transform.parent = transform;
+
+            newObject.transform.tag = "Btn";
+
+            newObject.transform.localPosition = new Vector3(actualX, actualY, actualZ);
+
+            i++;
+
+            if (i % colsCount == 0)
+            {
+                actualZ = startZ;
+                actualY += yAdding;
+            }
+            else
+            {
+                actualZ += zAdding;
             }
         }
 
