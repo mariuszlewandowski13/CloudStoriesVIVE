@@ -144,7 +144,7 @@ public class RaycastObjectSpawner : RaycastBase {
             Ray ray = new Ray(transform.position, transform.forward);
 
             Physics.Raycast(ray, out hit, raycasterLength);
-            if (hit.transform != null && hit.transform.tag == "RaycastSpecialColliders")
+            if (hit.transform != null && (hit.transform.tag == "RaycastSpecialColliders" || hit.transform.tag == "ScrollingPanel"))
             {
                 hitPoint = hit.point;
             }

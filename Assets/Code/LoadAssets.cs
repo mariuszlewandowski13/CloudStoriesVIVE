@@ -8,10 +8,10 @@ public class LoadAssets : MonoBehaviour {
     private void Start()
     {
         Load2DShapes();
-        LoadMovies();
-        LoadGIFS();
+        //LoadMovies();
+        //LoadGIFS();
         Load3DObjects();
-        LoadAudio();
+        //LoadAudio();
        // Print3DObjectsInfo();
     }
 

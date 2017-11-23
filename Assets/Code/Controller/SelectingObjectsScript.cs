@@ -86,8 +86,8 @@ public class SelectingObjectsScript : MonoBehaviour {
         if ((active || selected) && !highlighted)
         {
             
-            GetComponent<HighlightingSystem.Highlighter>().ReinitMaterials();
-            GetComponent<HighlightingSystem.Highlighter>().ConstantOn(ApplicationStaticData.objectsHighligthing);
+            //GetComponent<HighlightingSystem.Highlighter>().ReinitMaterials();
+            //GetComponent<HighlightingSystem.Highlighter>().ConstantOn(ApplicationStaticData.objectsHighligthing);
             //   if (GetComponent<Renderer>() != null)
             //{
             //    GetComponent<Renderer>().material.color = ApplicationStaticData.objectsHighligthing;
@@ -98,7 +98,7 @@ public class SelectingObjectsScript : MonoBehaviour {
         else if ((!active && !selected) && highlighted)
         {
             
-            GetComponent<HighlightingSystem.Highlighter>().ConstantOff();
+            //GetComponent<HighlightingSystem.Highlighter>().ConstantOff();
             //if (GetComponent<Renderer>() != null)
             //{
             //    GetComponent<Renderer>().material.color = ApplicationStaticData.objectsHighligthingNormalColor;

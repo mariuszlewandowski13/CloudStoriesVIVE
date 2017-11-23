@@ -27,7 +27,6 @@ GameObject:
   - component: {fileID: 114569754794941732}
   - component: {fileID: 114805761764736998}
   - component: {fileID: 114124946681421010}
-  - component: {fileID: 114880769017386562}
   m_Layer: 0
   m_Name: Video
   m_TagString: SceneObject
@@ -112,6 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5e7b5ebd6bbca14db8e20e6aba37a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTransformLocked: 0
   obj:
     ID: 0
     lastSavedPosition: {x: 0, y: 0, z: 0}
@@ -160,17 +160,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   click: 0
---- !u!114 &114880769017386562
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1249586368107854}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67d4de287b46eb34e83a61e4f9115070, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114914137960692656
 MonoBehaviour:
   m_ObjectHideFlags: 1

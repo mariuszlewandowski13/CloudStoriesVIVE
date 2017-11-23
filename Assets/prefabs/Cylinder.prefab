@@ -24,7 +24,6 @@ GameObject:
   - component: {fileID: 65791236360908030}
   - component: {fileID: 114045227437324564}
   - component: {fileID: 114655782143176074}
-  - component: {fileID: 114038546583026420}
   - component: {fileID: 114800125636727276}
   - component: {fileID: 114444537133515906}
   m_Layer: 0
@@ -100,17 +99,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.0000001, y: 2, z: 1.0000002}
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!114 &114038546583026420
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1563835795498174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67d4de287b46eb34e83a61e4f9115070, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114045227437324564
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -125,8 +113,10 @@ MonoBehaviour:
   database: {fileID: 0}
   sceneObjInfo: {fileID: 0}
   creatingObject: 0
+  objectType3: 
   objectType2: 3
-  objectType: 3DObject
+  objectType: 3
+  tex: {fileID: 0}
 --- !u!114 &114444537133515906
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -150,12 +140,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5e7b5ebd6bbca14db8e20e6aba37a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTransformLocked: 0
   obj:
     ID: 0
-    type: 
-    type2: 
     lastSavedPosition: {x: 0, y: 0, z: 0}
     lastSavedRotation: {x: 0, y: 0, z: 0}
+    lastSavedScale: {x: 0, y: 0, z: 0}
+    type: 0
+    path: 
 --- !u!114 &114800125636727276
 MonoBehaviour:
   m_ObjectHideFlags: 1

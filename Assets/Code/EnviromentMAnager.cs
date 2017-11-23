@@ -24,7 +24,7 @@ public class EnviromentMAnager : MonoBehaviour {
         sceneObjects = transform.Find("SceneObjects").gameObject;
     }
 
-    public GameObject SpawnObject(GameObject objToSpawn, Vector3 position, Vector3 scale, ObjectsTypes objectType, Quaternion rotation = new Quaternion(), bool selfRotation = false)
+    public GameObject SpawnObject(GameObject objToSpawn, Vector3 position, Vector3 scale, ObjectsTypes objectType, Quaternion rotation = new Quaternion(), bool selfRotation = false, Mesh mesh = null)
     {
 
         GameObject newObject = null;
@@ -49,6 +49,11 @@ public class EnviromentMAnager : MonoBehaviour {
         else {
              scaleHandler = Instantiate(scaleHandlers[(int)objectType], position, rotation);
         }
+
+        //if (mesh != null)
+        //{
+
+        //}
         
 
         scaleHandler.name = "ScaleHandler";

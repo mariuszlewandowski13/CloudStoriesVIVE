@@ -26,6 +26,8 @@ public class RaycastMoveScript : RaycastBase{
 
     private Vector3 dragOffset;
 
+    private float posSnapTreshold = 0.05f;
+    private float rotSnapTreshold = 15.0f;
 
     void Start()
     {
@@ -76,7 +78,7 @@ public class RaycastMoveScript : RaycastBase{
             Ray ray = new Ray(transform.position, transform.forward);
 
             Physics.Raycast(ray, out hit, raycasterLength);
-            if (hit.transform != null && hit.transform.tag == "RaycastSpecialColliders" )
+            if (hit.transform != null && (hit.transform.tag == "RaycastSpecialColliders"|| hit.transform.tag == "ScrollingPanel"))
             {
                 hitPoint = hit.point;
             }
@@ -86,13 +88,20 @@ public class RaycastMoveScript : RaycastBase{
             }
             CursorOn();
 
-            
+            Vector3 newRotation = transform.rotation.eulerAngles;
+
+            if (controller.gripPressed)
+            {
+                hitPoint = ControllingObjectsHelper.CalculatePosSnap(hitPoint, posSnapTreshold);
+                newRotation = ControllingObjectsHelper.CalculateRotSnap(newRotation, rotSnapTreshold);
+            }
+
             movingObject.transform.position = hitPoint - dragOffset;
             rotationCenter.transform.position = movingObject.transform.position;
             movingObject.transform.parent = rotationCenter.transform;
 
             
-            rotationCenter.transform.rotation = transform.rotation;
+            rotationCenter.transform.rotation = Quaternion.Euler(newRotation);
 
             controllerSecondPosition = controllerFirstPosition;
             controllerFirstPosition = controller.transform.position;
@@ -103,6 +112,9 @@ public class RaycastMoveScript : RaycastBase{
             }
         }
     }
+
+    
+
 
 
     public void StopMoving()

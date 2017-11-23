@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 33644746190690134}
   - component: {fileID: 23068594232675546}
   - component: {fileID: 114849037678271530}
-  - component: {fileID: 114135597210449668}
   - component: {fileID: 114981617598670338}
   - component: {fileID: 114992045846494602}
   - component: {fileID: 114957045248726222}
@@ -87,17 +86,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1881642111583426}
   m_Mesh: {fileID: 0}
---- !u!114 &114135597210449668
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1881642111583426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67d4de287b46eb34e83a61e4f9115070, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114849037678271530
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -109,6 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5e7b5ebd6bbca14db8e20e6aba37a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTransformLocked: 0
   obj:
     ID: 0
     lastSavedPosition: {x: 0, y: 0, z: 0}

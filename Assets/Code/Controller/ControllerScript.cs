@@ -123,6 +123,10 @@ public class ControllerScript : MonoBehaviour {
    public bool triggerDown;
    public bool triggerUp;
 
+    public bool gripDown;
+    public bool gripPressed;
+    public bool gripUp;
+
     bool previousStatePressed = false;
     bool actualStatePressed = false;
 
@@ -143,7 +147,12 @@ public class ControllerScript : MonoBehaviour {
         lock(pickupLock)
         {
             triggerDown = controller.GetPressDown(triggerButton);
-        triggerUp = controller.GetPressUp(triggerButton);
+            triggerUp = controller.GetPressUp(triggerButton);
+
+            gripDown = controller.GetPressDown(gripButton);
+            gripPressed = controller.GetPress(gripButton);
+            gripUp = controller.GetPressUp(gripButton);
+
             //  Debug.Log("TriggerDown :" + triggerDown.ToString() + " Pickup: " + pickup);
 
 

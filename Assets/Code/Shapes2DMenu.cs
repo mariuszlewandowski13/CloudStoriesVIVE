@@ -34,13 +34,19 @@ public class Shapes2DMenu : MonoBehaviour {
 
     private void Update()
     {
-        if (firstIcon.isRaycasting &&  scroll.canScrollUp)
+        if (firstIcon.isRaycasting && scroll.canScrollUp)
         {
             scroll.canScrollUp = false;
+        } else if (!firstIcon.isRaycasting && !scroll.canScrollUp)
+        {
+            scroll.canScrollUp = true;
         }
         if (lastIcon.isRaycasting && scroll.canScrollDown)
         {
             scroll.canScrollDown = false;
+        }else if (!lastIcon.isRaycasting && !scroll.canScrollDown)
+        {
+            scroll.canScrollDown = true;
         }
 
     }

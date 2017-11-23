@@ -8,9 +8,10 @@ public class Objects3DMenu : GuiMenu
 {
 
     public EnviromentMAnager envir;
-    private int firstPrefabToLoad = 7;
+    //private int firstPrefabToLoad = 7;
+    private int firstPrefabToLoad = 100;
 
-     float emptySize = 0.2f;
+    float emptySize = 0.2f;
 
     private void Start()
     {
@@ -65,14 +66,9 @@ public class Objects3DMenu : GuiMenu
                         newObject.GetComponent<Renderer>().material.mainTexture = info.texturesInfos[0].tex;
                     }
 
-                    if (i == 1)
-                    {
-                        CheckRaycasting raycasting = newObject.AddComponent<CheckRaycasting>();
-                        raycasting.raycastingGameObject = panel;
-                            firstIcon = raycasting;
-                        
 
-                    }
+                    
+
 
                     newObject.AddComponent<BoxCollider>();
                     newObject.GetComponent<Object3DSpawningButton>().basePath = info.path + "/" + info.name;
@@ -83,6 +79,20 @@ public class Objects3DMenu : GuiMenu
                     newObject.transform.localPosition = new Vector3(actualX, actualY, actualZ);
 
                     i++;
+                    if (i == 1 || i == ApplicationStaticData.objects3DInfos.Count)
+                    {
+                        CheckRaycasting raycasting = newObject.AddComponent<CheckRaycasting>();
+                        raycasting.raycastingGameObject = panel;
+                        if (i == 1)
+                        {
+                            firstIcon = raycasting;
+                        }
+                        else
+                        {
+                            lastIcon = raycasting;
+                        }
+
+                    }
 
                     if (i % colsCount == 0)
                     {
@@ -145,4 +155,6 @@ public class Objects3DMenu : GuiMenu
         }
 
     }
+
+    
 }

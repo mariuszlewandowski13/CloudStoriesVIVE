@@ -12,13 +12,16 @@ public class ImageMoveScript : MovingScript
 
     private GameObject actualController;
 
-    public bool active = false;
+    private ControllerScript actualControllerScript;
+
+    private float posSnapTreshold = 0.05f;
+    private float rotSnapTreshold = 15.0f;
 
     #endregion
     #region Public Properties
 
     public bool canMove;
-
+    public bool active = false;
     #endregion
 
 
@@ -50,8 +53,19 @@ public class ImageMoveScript : MovingScript
         controllerSecondPosition = controllerFirstPosition;
         controllerFirstPosition = controller.transform.position;
 
-        rotationParent.transform.position = controllerFirstPosition;
-        rotationParent.transform.rotation = controller.transform.rotation;
+        Vector3 pos = controllerFirstPosition;
+        Vector3 rot = controller.transform.rotation.eulerAngles;
+
+        if (actualControllerScript.gripPressed)
+        {
+            pos = ControllingObjectsHelper.CalculatePosSnap(pos, posSnapTreshold);
+            rot = ControllingObjectsHelper.CalculateRotSnap(rot, rotSnapTreshold);
+        }
+
+
+
+        rotationParent.transform.position = pos;
+        rotationParent.transform.rotation = Quaternion.Euler(rot);
                 gameObject.transform.parent = rotationParent.transform;
 
     }
@@ -74,9 +88,10 @@ public class ImageMoveScript : MovingScript
 
             gameObject.transform.parent = rotationParent.transform;
 
+            actualControllerScript = controller.GetComponent<ControllerScript>();
+
         }
-           
-            
+      
         
     }
     private void OnTriggerUp(GameObject controller)

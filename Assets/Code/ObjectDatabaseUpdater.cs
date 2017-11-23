@@ -39,17 +39,18 @@ public class ObjectDatabaseUpdater : MonoBehaviour {
         existing = true;
         InvokeRepeating("UpdateInfo",2.0f, 2.0f);
     }
-	
-	// Update is called once per frame
-	void UpdateInfo () {
-        if (!creatingObject && sceneObjInfo.obj != null && database != null && existing && !AnimationManager.isWorking) 
+
+    // Update is called once per frame
+    void UpdateInfo()
+    {
+        if (!creatingObject && sceneObjInfo.obj != null && database != null && existing && !AnimationManager.isWorking)
         {
             if (transform.localPosition.x != sceneObjInfo.obj.lastSavedPosition.x || transform.localPosition.y != sceneObjInfo.obj.lastSavedPosition.y || transform.localPosition.z != sceneObjInfo.obj.lastSavedPosition.z || transform.rotation.eulerAngles.x != sceneObjInfo.obj.lastSavedRotation.x || transform.rotation.eulerAngles.y != sceneObjInfo.obj.lastSavedRotation.y || transform.rotation.eulerAngles.z != sceneObjInfo.obj.lastSavedRotation.z || transform.localScale.x != sceneObjInfo.obj.lastSavedScale.x || transform.localScale.y != sceneObjInfo.obj.lastSavedScale.y || transform.localScale.z != sceneObjInfo.obj.lastSavedScale.z)
             {
                 UpdateObjectPosRot();
             }
         }
-	}
+    }
 
     public void SetSceneObject(SceneObject newSceneObj)
     {

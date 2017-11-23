@@ -28,13 +28,21 @@ public class GuiMenu : MonoBehaviour {
 
     private void Update()
     {
-        if ((firstIcon == null || firstIcon.isRaycasting) && scroll.canScrollUp)
+        if (firstIcon.isRaycasting && scroll.canScrollUp)
         {
             scroll.canScrollUp = false;
         }
-        if ((lastIcon == null || lastIcon.isRaycasting) && scroll.canScrollDown)
+        else if (!firstIcon.isRaycasting && !scroll.canScrollUp)
+        {
+            scroll.canScrollUp = true;
+        }
+        if (lastIcon.isRaycasting && scroll.canScrollDown)
         {
             scroll.canScrollDown = false;
+        }
+        else if (!lastIcon.isRaycasting && !scroll.canScrollDown)
+        {
+            scroll.canScrollDown = true;
         }
 
     }

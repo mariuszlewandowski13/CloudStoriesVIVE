@@ -8,7 +8,7 @@ public class GUIManager : MonoBehaviour {
 
     public GameObject deleteButton;
 
-    public AnimationManager animManager;
+   // public AnimationManager animManager;
 
     public GameObject lockCheckbox;
 
@@ -16,11 +16,11 @@ public class GUIManager : MonoBehaviour {
     {
         actualSelectedGameObject = newSelectedgameObject;
 
-        if (actualSelectedGameObject.GetComponent<ObjectAnimationScript>() != null && animManager != null)
-        {
-            animManager.SetActualAnimatedObject(actualSelectedGameObject.GetComponent<ObjectAnimationScript>());
+        //if (actualSelectedGameObject.GetComponent<ObjectAnimationScript>() != null && animManager != null)
+        //{
+        //    animManager.SetActualAnimatedObject(actualSelectedGameObject.GetComponent<ObjectAnimationScript>());
 
-        }
+        //}
 
 
         SetSelectedObjectInfo(actualSelectedGameObject.name);
@@ -33,10 +33,10 @@ public class GUIManager : MonoBehaviour {
     public void RemoveActualSelectedGameObject()
     {
         RemoveObjectInfo();
-        if (actualSelectedGameObject.GetComponent<ObjectAnimationScript>() != null && animManager != null)
-        {
-            animManager.RemoveActualAnimatedObject();
-        }
+        //if (actualSelectedGameObject.GetComponent<ObjectAnimationScript>() != null && animManager != null)
+        //{
+        //    animManager.RemoveActualAnimatedObject();
+        //}
         actualSelectedGameObject = null;
 
         ActivateObjectControlButtons(false);
@@ -47,10 +47,10 @@ public class GUIManager : MonoBehaviour {
         if (actualSelectedGameObject != null)
         {
             RemoveObjectInfo();
-            if (actualSelectedGameObject.GetComponent<ObjectAnimationScript>() != null && animManager != null)
-            {
-                animManager.RemoveActualAnimatedObject();
-            }
+            //if (actualSelectedGameObject.GetComponent<ObjectAnimationScript>() != null && animManager != null)
+            //{
+            //    animManager.RemoveActualAnimatedObject();
+            //}
 
             actualSelectedGameObject.GetComponent<ObjectDatabaseUpdater>().DestroySceneObject();
 
