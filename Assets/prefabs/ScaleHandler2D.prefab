@@ -3769,7 +3769,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afcd3863b5dd81b4692df657ea00589b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleMultiplier: -0.3
+  scaleMultiplier: -0.6
   referencePoint: {fileID: 1530352734269700}
   horizontal: 1
   vertical: 1
@@ -3809,7 +3809,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afcd3863b5dd81b4692df657ea00589b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleMultiplier: -0.3
+  scaleMultiplier: -0.6
   referencePoint: {fileID: 1342339402213494}
   horizontal: 1
   vertical: 0
@@ -3995,7 +3995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afcd3863b5dd81b4692df657ea00589b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleMultiplier: -0.3
+  scaleMultiplier: -0.6
   referencePoint: {fileID: 1472804325785490}
   horizontal: 0
   vertical: 1
@@ -4011,7 +4011,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afcd3863b5dd81b4692df657ea00589b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleMultiplier: -0.3
+  scaleMultiplier: -0.6
   referencePoint: {fileID: 1867574327204448}
   horizontal: 1
   vertical: 1
@@ -4039,7 +4039,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afcd3863b5dd81b4692df657ea00589b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleMultiplier: -0.3
+  scaleMultiplier: -0.6
   referencePoint: {fileID: 1080357657384534}
   horizontal: 1
   vertical: 0
@@ -4055,7 +4055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afcd3863b5dd81b4692df657ea00589b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleMultiplier: -0.3
+  scaleMultiplier: -0.6
   referencePoint: {fileID: 1913831527382778}
   horizontal: 0
   vertical: 1
@@ -4082,7 +4082,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afcd3863b5dd81b4692df657ea00589b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleMultiplier: -0.3
+  scaleMultiplier: -0.6
   referencePoint: {fileID: 1957114790074866}
   horizontal: 1
   vertical: 1
@@ -4194,7 +4194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afcd3863b5dd81b4692df657ea00589b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleMultiplier: -0.3
+  scaleMultiplier: -0.6
   referencePoint: {fileID: 1013091305626658}
   horizontal: 1
   vertical: 1

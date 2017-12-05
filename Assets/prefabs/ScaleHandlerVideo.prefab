@@ -52,7 +52,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4296274401661800}
   m_Layer: 8
-  m_Name: BottomLeftScaling
+  m_Name: TopLeftScaling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -308,7 +308,7 @@ GameObject:
   - component: {fileID: 114887690622721312}
   - component: {fileID: 114290528963234100}
   m_Layer: 8
-  m_Name: Bottom
+  m_Name: Top
   m_TagString: Tools
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -575,7 +575,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4952712847112390}
   m_Layer: 8
-  m_Name: BottomScaling
+  m_Name: TopScaling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -637,7 +637,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4779760117346584}
   m_Layer: 8
-  m_Name: TopRightScaling
+  m_Name: BottomRightScaling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -841,7 +841,7 @@ GameObject:
   - component: {fileID: 114585195575800790}
   - component: {fileID: 114368110454397592}
   m_Layer: 8
-  m_Name: BottomLeft
+  m_Name: TopLeft
   m_TagString: Tools
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -863,7 +863,7 @@ GameObject:
   - component: {fileID: 114568075008619926}
   - component: {fileID: 114973843906151186}
   m_Layer: 8
-  m_Name: BottomRight
+  m_Name: TopRight
   m_TagString: Tools
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -932,7 +932,7 @@ GameObject:
   - component: {fileID: 114636117224080570}
   - component: {fileID: 114389732207008450}
   m_Layer: 8
-  m_Name: TopLeft
+  m_Name: BottomLeft
   m_TagString: Tools
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -947,7 +947,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4234965728059506}
   m_Layer: 8
-  m_Name: BottomRightScaling
+  m_Name: TopRightScaling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -996,7 +996,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4785600510091038}
   m_Layer: 8
-  m_Name: TopScaling
+  m_Name: BottomScaling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1065,7 +1065,7 @@ GameObject:
   - component: {fileID: 114392145841241080}
   - component: {fileID: 114852007094738934}
   m_Layer: 8
-  m_Name: Top
+  m_Name: Bottom
   m_TagString: Tools
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1080,7 +1080,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4533388004504106}
   m_Layer: 8
-  m_Name: TopLeftScaling
+  m_Name: BottomLeftScaling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1102,7 +1102,7 @@ GameObject:
   - component: {fileID: 114015400285164652}
   - component: {fileID: 114751645510530784}
   m_Layer: 8
-  m_Name: TopRight
+  m_Name: BottomRight
   m_TagString: Tools
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

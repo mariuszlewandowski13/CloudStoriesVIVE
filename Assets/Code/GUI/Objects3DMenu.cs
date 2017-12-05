@@ -93,6 +93,9 @@ public class Objects3DMenu : GuiMenu
                         }
 
                     }
+                    IconShowHideScript showHide = newObject.AddComponent<IconShowHideScript>();
+                    showHide.SetReferenceObject(panel);
+
 
                     if (i % colsCount == 0)
                     {
@@ -140,6 +143,9 @@ public class Objects3DMenu : GuiMenu
             newObject.transform.tag = "Btn";
 
             newObject.transform.localPosition = new Vector3(actualX, actualY, actualZ);
+
+            IconShowHideScript showHide = newObject.AddComponent<IconShowHideScript>();
+            showHide.SetReferenceObject(panel);
 
             i++;
 

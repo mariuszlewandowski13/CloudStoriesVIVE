@@ -19,9 +19,6 @@ public class ControllerRaycastScript : RaycastBase {
     public float triggerDownClickedTime;
     public Vector3 lastPosition;
 
-
-    public float clickDuration = 0.3f;
-
     public bool click;
 
     void Start () {

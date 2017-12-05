@@ -13,6 +13,9 @@ public class DatabaseController : MonoBehaviour {
 
     private string message;
 
+    private Queue<string> settingsUpdateCommands;
+    private bool updatingSettings;
+
     public void LoadUserLayouts(ResultMethod4 method)
     {
         WWWForm form = new WWWForm();
@@ -266,6 +269,7 @@ public class DatabaseController : MonoBehaviour {
             string onwer = msg[2];
             string name = msg[3];
             ProjectObject proj = new ProjectObject(ID, auth, onwer, name);
+            proj.SetProjectSettings(true);
             method(proj);
         }
     }
@@ -290,6 +294,49 @@ public class DatabaseController : MonoBehaviour {
             method(ID);
         }
             
+    }
+
+    private void Start()
+    {
+        settingsUpdateCommands = new Queue<string>();
+    }
+
+    private void UpdateSettings(string command)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("command", command);
+        WWW w = new WWW(ApplicationStaticData.serverScriptsPath + "ExecuteSQL.php", form);
+        StartCoroutine(requestSettingUpdate(w));
+    }
+
+    IEnumerator requestSettingUpdate(WWW w)
+    {
+        yield return w;
+        if (w.error == null)
+        {
+            message = w.text;
+        }
+        else
+        {
+            message = "ERROR: " + w.error + "\n";
+        }
+        Debug.Log(message);
+        updatingSettings = false;
+    }
+
+    private void Update()
+    {
+        if (settingsUpdateCommands.Count > 0 && !updatingSettings)
+        {
+            updatingSettings = true;
+            UpdateSettings(settingsUpdateCommands.Dequeue());
+        }
+    }
+
+
+    public void AddSettingsUpdateCommand(string command)
+    {
+        settingsUpdateCommands.Enqueue(command);
     }
 
 

@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2baaedd56a372614c9227ee332e849aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectToSpawn: {fileID: 1881642111583426, guid: 7a1f9d690af87834484d1587ede6e469,
+  objectToSpawn: {fileID: 1946147763553196, guid: 7a1f9d690af87834484d1587ede6e469,
     type: 2}
   basePath: 
   click: 0

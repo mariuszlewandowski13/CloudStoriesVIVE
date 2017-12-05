@@ -99,6 +99,9 @@ public class Shapes2DMenu : MonoBehaviour {
 
                 icon.transform.localPosition = new Vector3(actualX, actualY, actualZ);
 
+                IconShowHideScript showHide = icon.AddComponent<IconShowHideScript>();
+                showHide.SetReferenceObject(panel);
+
                 if (i % colsCount == 0)
                 {
                     actualZ = startZ;

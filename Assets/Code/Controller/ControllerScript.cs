@@ -86,14 +86,7 @@ public class ControllerScript : MonoBehaviour {
     }
 
 
-
-
-
     public static event Interaction TriggerDownGlobal;
-
-    public event Interaction GripDown;
-
-    public event Interaction GripUp;
 
     public GameObject rotationCenter;
 

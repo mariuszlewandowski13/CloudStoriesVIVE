@@ -5,7 +5,7 @@ public class ScaleHandlerScript : MonoBehaviour {
 
     #region Private Properties
 
-    private GameObject parentObject
+    public GameObject parentObject
     {
         get {
             return gameObject.transform.parent.gameObject;
@@ -38,6 +38,7 @@ public class ScaleHandlerScript : MonoBehaviour {
         children = new List<Transform>();
 
         SetChildren();
+        UpdateChildrenPresentation(parentObject.GetComponent<BoxCollider>());
     }
 
     public GameObject GetParentObject()
@@ -148,6 +149,94 @@ public class ScaleHandlerScript : MonoBehaviour {
         foreach (Transform child in children)
         {
             child.parent = newParent;
+        }
+    }
+
+    public void UpdateChildrenPresentation(BoxCollider parent)
+    {
+        foreach (Transform child in transform)
+        {
+            Vector3 newPosition = new Vector3();
+            if (child.name == "Top1" || child.name == "Top1Scaling")
+            {
+                newPosition = parent.bounds.max;
+                newPosition.x = parent.bounds.min.x;
+            }
+            else if (child.name == "Top2" || child.name == "Top2Scaling" || child.name == "TopLeft" || child.name == "TopLeftScaling") newPosition = parent.bounds.max;
+            else if (child.name == "Top3" || child.name == "Top3Scaling")
+            {
+                newPosition = parent.bounds.max;
+                newPosition.z = parent.bounds.min.z;
+            }
+            else if (child.name == "Top4" || child.name == "Top4Scaling" || child.name == "BottomLeft" || child.name == "BottomLeftScaling")
+            {
+                newPosition = parent.bounds.min;
+                newPosition.y = parent.bounds.max.y;
+            }
+            else if (child.name == "Bottom4" || child.name == "Bottom4Scaling" || child.name == "BottomRight" || child.name == "BottomRightScaling") newPosition = parent.bounds.min;
+            else if (child.name == "Bottom2" || child.name == "Bottom2Scaling" || child.name == "TopRight" || child.name == "TopRightScaling")
+            {
+                newPosition = parent.bounds.max;
+                newPosition.y = parent.bounds.min.y;
+            }
+            else if (child.name == "Bottom3" || child.name == "Bottom3Scaling")
+            {
+                newPosition = parent.bounds.min;
+                newPosition.x = parent.bounds.max.x;
+            }
+            else if (child.name == "Bottom1" || child.name == "Bottom1Scaling")
+            {
+                newPosition = parent.bounds.min;
+                newPosition.z = parent.bounds.max.z;
+            }
+            else if (child.name == "Side1" || child.name == "Side1Scaling")
+            {
+                newPosition = parent.bounds.center;
+                newPosition.z = parent.bounds.max.z;
+            }
+            else if (child.name == "Side2" || child.name == "Side2Scaling")
+            {
+                newPosition = parent.bounds.center;
+                newPosition.z = parent.bounds.min.z;
+            }
+            else if (child.name == "Side3" || child.name == "Side3Scaling")
+            {
+                newPosition = parent.bounds.center;
+                newPosition.x = parent.bounds.min.x;
+            }
+            else if (child.name == "Side4" || child.name == "Side4Scaling")
+            {
+                newPosition = parent.bounds.center;
+                newPosition.x = parent.bounds.max.x;
+            }
+            else if (child.name == "Side5" || child.name == "Side5Scaling" || child.name == "Left" || child.name == "LeftScaling")
+            {
+                newPosition = parent.bounds.center;
+                newPosition.y = parent.bounds.max.y;
+            }
+            else if (child.name == "Side6" || child.name == "Side6Scaling" || child.name == "Right" || child.name == "RightScaling")
+            {
+                newPosition = parent.bounds.center;
+                newPosition.y = parent.bounds.min.y;
+            }
+            else if (child.name == "Top" || child.name == "TopScaling")
+            {
+                newPosition = parent.bounds.max;
+                newPosition.y = parent.bounds.center.y;
+            }
+            else if (child.name == "Bottom" || child.name == "BottomScaling")
+            {
+                newPosition = parent.bounds.min;
+                newPosition.y = parent.bounds.center.y;
+            }
+
+
+
+
+
+
+
+            child.transform.position = newPosition;
         }
     }
 

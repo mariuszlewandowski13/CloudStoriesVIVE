@@ -37,6 +37,17 @@ public class LoadProjectsScenes : GuiMenu
 
             i++;
 
+            if (i == 1)
+            {
+                CheckRaycasting raycasting = newButton.AddComponent<CheckRaycasting>();
+                raycasting.raycastingGameObject = panel;
+                    firstIcon = raycasting;
+
+            }
+
+            IconShowHideScript showHide = newButton.AddComponent<IconShowHideScript>();
+            showHide.SetReferenceObject(panel);
+
             if (i % colsCount == 0)
             {
                 actualZ = startZ;
@@ -58,6 +69,13 @@ public class LoadProjectsScenes : GuiMenu
 
             newButton1.transform.position = scroll.transform.position;
             newButton1.transform.localPosition += new Vector3(actualX, actualY, actualZ);
+
+            IconShowHideScript showHide = newButton1.AddComponent<IconShowHideScript>();
+            showHide.SetReferenceObject(panel);
+
+            CheckRaycasting raycasting = newButton1.AddComponent<CheckRaycasting>();
+            raycasting.raycastingGameObject = panel;
+            lastIcon = raycasting;
         }
         
     }

@@ -8,6 +8,8 @@ using System.IO;
 [RequireComponent(typeof(DatabaseController))]
 public class CreateProjectScript : MonoBehaviour {
 
+    public GUIManager guiManager;
+
     public GameObject shapeObjectPrefab;
     public GameObject object3DPrefab;
 
@@ -129,8 +131,9 @@ public class CreateProjectScript : MonoBehaviour {
         StreamReader reader = new StreamReader(dataStream);
         // Read the content.  
         string responseFromServer = reader.ReadToEnd();
+        string[] first = responseFromServer.Split(new string[] { "$$$$$" }, StringSplitOptions.None);
         string[] res;
-        string[] msg = responseFromServer.Split(new string[] { "@@@@@" }, StringSplitOptions.None);
+        string[] msg = first[1].Split(new string[] { "@@@@@" }, StringSplitOptions.None);
         foreach (string row in msg)
         {
             res = row.Split(new string[] { "#####" }, StringSplitOptions.None);
@@ -141,10 +144,14 @@ public class CreateProjectScript : MonoBehaviour {
                 {
                     ApplicationStaticData.actualProject.projectScenesNumbers.Add(number);
                 }
+                
 
-               
+
             }
         }
+        bool isActive = (int.Parse(first[0]) > 0 ? true : false);
+        ApplicationStaticData.actualProject.SetProjectSettings(isActive);
+        guiManager.ShowHideEnviroment(isActive, false);
 
         // Display the content.  
         Debug.Log(responseFromServer);
@@ -328,6 +335,11 @@ public class CreateProjectScript : MonoBehaviour {
         scaleHandler.name = "ScaleHandler";
 
         scaleHandler.transform.parent = newObject.transform;
+    }
+
+    public void UpdateSettingsInfo()
+    {
+
     }
 
 }

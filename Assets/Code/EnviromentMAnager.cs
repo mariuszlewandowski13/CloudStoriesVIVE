@@ -15,8 +15,12 @@ public class EnviromentMAnager : MonoBehaviour {
 
     public GameObject[] shapesPrefabs;
 
+    public GameObject table;
+
     private GameObject layoutObject;
     private GameObject sceneObjects;
+
+
 
     private void Start()
     {
@@ -101,6 +105,15 @@ public class EnviromentMAnager : MonoBehaviour {
             SceneObject sceneObj = child.GetComponent<SceneObjectInfo>().obj;
             GameObject.Find("LoadScene").GetComponent<DatabaseController>().SaveLayoutObject(sceneObj.type, sceneObj.path, child.position, child.rotation.eulerAngles, child.transform.lossyScale, layoutID);
         }
+    }
+
+    public void ShowHideEnviroment(bool active)
+    {
+        if (table != null)
+        {
+            table.SetActive(active);
+        }
+        
     }
 
 }

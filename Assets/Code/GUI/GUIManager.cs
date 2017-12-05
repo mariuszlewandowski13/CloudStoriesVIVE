@@ -12,6 +12,10 @@ public class GUIManager : MonoBehaviour {
 
     public GameObject lockCheckbox;
 
+    public GameObject settings;
+
+    public EnviromentShwoCheckbox settingsShowCheckbox;
+
     public void SetActualSelectedGameObject(GameObject newSelectedgameObject)
     {
         actualSelectedGameObject = newSelectedgameObject;
@@ -24,6 +28,8 @@ public class GUIManager : MonoBehaviour {
 
 
         SetSelectedObjectInfo(actualSelectedGameObject.name);
+
+        ActivateSettings(false);
 
         ActivateObjectControlButtons(true);
 
@@ -39,7 +45,10 @@ public class GUIManager : MonoBehaviour {
         //}
         actualSelectedGameObject = null;
 
+
+        ActivateSettings(true);
         ActivateObjectControlButtons(false);
+
     }
 
     public void DeleteActualSelectedGameObject()
@@ -56,6 +65,8 @@ public class GUIManager : MonoBehaviour {
 
             Destroy(actualSelectedGameObject);
             actualSelectedGameObject = null;
+
+            ActivateSettings(true);
 
             ActivateObjectControlButtons(false);
         }
@@ -106,5 +117,21 @@ public class GUIManager : MonoBehaviour {
     {
         ActivateDeleteButton(activate);
         ActivateLockCheckbox(activate);
+    }
+
+    private void ActivateSettings(bool activate)
+    {
+        settings.SetActive(activate);
+    }
+
+    public void ShowHideEnviroment(bool setActive, bool update = true)
+    {
+        GameObject.Find("SCENE").GetComponent<EnviromentMAnager>().ShowHideEnviroment(setActive);
+        settingsShowCheckbox.SetCheckboxActive(setActive);
+        if (update)
+        {
+            ApplicationStaticData.actualProject.projectSettings.isTableActive = setActive;
+        }
+       
     }
 }

@@ -91,7 +91,7 @@ public class ObjectDatabaseUpdater : MonoBehaviour {
         }
     }
 
-    public void SetTypesAndCreate(ObjectsTypes type, string type2, string type3, string additionalData = "")
+    public void SetTypesAndCreate(ObjectsTypes type, string type2, string type3,string additionalData = "")
     {
         objectType = type;
         objectType2 = type2;
