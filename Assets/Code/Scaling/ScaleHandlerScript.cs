@@ -38,7 +38,12 @@ public class ScaleHandlerScript : MonoBehaviour {
         children = new List<Transform>();
 
         SetChildren();
-        UpdateChildrenPresentation(parentObject.GetComponent<BoxCollider>());
+        if (parentObject.GetComponent<BoxCollider>())
+        {
+            UpdateChildrenPresentation(parentObject.GetComponent<BoxCollider>());
+
+        }
+        
     }
 
     public GameObject GetParentObject()

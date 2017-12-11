@@ -10,8 +10,10 @@ public class VideoSpawningButton : Object3DSpawningButton
 
     public override void Clicked(Vector3 pos, GameObject clickingObject)
     {
-        clickingObject.GetComponent<RaycastObjectSpawner>().StartSpawning(objectToSpawn, pos, transform.lossyScale, transform.rotation.eulerAngles, ObjectsTypes.movie, path2, basePath, "MP4", true);
-
+        if (GetComponent<MediaPlayerCtrl>().m_strFileName != "" && GetComponent<MediaPlayerCtrl>().GetCurrentState() != MediaPlayerCtrl.MEDIAPLAYER_STATE.ERROR)
+        {
+            clickingObject.GetComponent<RaycastObjectSpawner>().StartSpawning(objectToSpawn, pos, transform.lossyScale, transform.rotation.eulerAngles, ObjectsTypes.movie, path2, basePath, "MP4", true);
+        }
     }
 
     public void SetObjectTypes(string path, string path2)

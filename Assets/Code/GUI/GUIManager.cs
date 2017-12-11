@@ -7,8 +7,9 @@ public class GUIManager : MonoBehaviour {
     private GameObject actualSelectedGameObject;
 
     public GameObject deleteButton;
+    public GameObject actions;
 
-   // public AnimationManager animManager;
+    // public AnimationManager animManager;
 
     public GameObject lockCheckbox;
 
@@ -108,6 +109,11 @@ public class GUIManager : MonoBehaviour {
         deleteButton.SetActive(activate);
     }
 
+    private void ActivateActions(bool activate)
+    {
+        actions.SetActive(activate);
+    }
+
     private void ActivateLockCheckbox(bool activate)
     {
         lockCheckbox.SetActive(activate);
@@ -117,6 +123,7 @@ public class GUIManager : MonoBehaviour {
     {
         ActivateDeleteButton(activate);
         ActivateLockCheckbox(activate);
+        ActivateActions(activate);
     }
 
     private void ActivateSettings(bool activate)

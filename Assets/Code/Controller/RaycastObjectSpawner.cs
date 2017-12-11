@@ -184,6 +184,7 @@ public class RaycastObjectSpawner : RaycastBase {
         spawnedObject.AddComponent<ImageMoveScript>();
         spawnedObject.AddComponent<SelectingObjectsScript>();
         spawnedObject.AddComponent<ObjectAnimationScript>();
+        spawnedObject.AddComponent<ObjectActionsScript>();
     }
 
    

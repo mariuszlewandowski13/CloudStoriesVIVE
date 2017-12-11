@@ -236,9 +236,14 @@ public class DatabaseController : MonoBehaviour {
             {
                 ShapeObject obj = new ShapeObject(path, ID, typ1, pos, rot, scale);
                 method(obj);
-            }else if (ObjectsTypes.object3D == typ1)
+            }
+            else if (ObjectsTypes.object3D == typ1)
             {
                 Object3D obj = new Object3D(path, ID, typ1, pos, rot, scale);
+                method(obj);
+            }
+            else {
+                VideoObject obj = new VideoObject(path, ID, typ1, pos, rot, scale);
                 method(obj);
             }
 

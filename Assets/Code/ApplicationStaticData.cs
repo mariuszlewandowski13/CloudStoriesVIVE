@@ -36,6 +36,8 @@ public static class ApplicationStaticData
     public static string audioPath = mediaPath + "Audio/";
     public static string objects3DPath = mediaPath + "Objects3D/";
 
+    public static string projectIDFile = Application.dataPath + "/projectID.txt";
+
     #endregion
 
 

@@ -12,6 +12,7 @@ public class CreateProjectScript : MonoBehaviour {
 
     public GameObject shapeObjectPrefab;
     public GameObject object3DPrefab;
+    public GameObject videoPrefab;
 
     public GameObject spawnedObjectsParent;
 
@@ -68,6 +69,7 @@ public class CreateProjectScript : MonoBehaviour {
 
 	void Start () {
         envirMan = GameObject.Find("SCENE").GetComponent<EnviromentMAnager>();
+        TryToLoadIDFromFile();
         if (ApplicationStaticData.projectToLoad < 0 )
         {
             CreateProject();
@@ -84,6 +86,29 @@ public class CreateProjectScript : MonoBehaviour {
         }
      
 }
+
+    private void TryToLoadIDFromFile()
+    {
+        if (File.Exists(ApplicationStaticData.projectIDFile))
+        {
+            try
+            {
+                StreamReader reader = new StreamReader(ApplicationStaticData.projectIDFile);
+                string projID = reader.ReadLine().Trim();
+                reader.Close();
+                int number;
+                if (int.TryParse(projID, out number))
+                {
+                    ApplicationStaticData.projectToLoad = number;
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+            
+        }
+    }
 
     public void CreateProject()
     {
@@ -223,7 +248,26 @@ public class CreateProjectScript : MonoBehaviour {
         Vector3 rot = new Vector3();
         Vector3 size = new Vector3();
 
-        if (objType == ObjectsTypes.object3D)
+
+        if (objType == ObjectsTypes.movie || objType == ObjectsTypes.gif)
+        {
+
+            pos = new Vector3(float.Parse(line[3]), float.Parse(line[4]), float.Parse(line[5]));
+            rot = new Vector3(float.Parse(line[6]), float.Parse(line[7]), float.Parse(line[8]));
+            size = new Vector3(float.Parse(line[9]), float.Parse(line[10]), float.Parse(line[11]));
+
+            newObject = Instantiate(videoPrefab, pos, Quaternion.Euler(rot));
+
+
+            newObject.transform.parent = spawnedObjectsParent.transform;
+            newObject.transform.localPosition = pos;
+            newObject.transform.localScale = size;
+
+            CreateScaleHandler(objType, newObject.transform.position, newObject.transform.rotation, newObject, false);
+            newObject.GetComponent<MediaPlayerCtrl>().m_strFileName = "file://" + line[2];
+
+        }
+        else if (objType == ObjectsTypes.object3D)
         {
                 int number;
 
@@ -297,6 +341,7 @@ public class CreateProjectScript : MonoBehaviour {
             newObject.AddComponent<ImageMoveScript>();
             newObject.AddComponent<SelectingObjectsScript>();
             newObject.AddComponent<ObjectAnimationScript>();
+            newObject.AddComponent<ObjectActionsScript>();
         }
 
     }

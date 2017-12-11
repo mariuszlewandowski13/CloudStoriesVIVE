@@ -22,7 +22,7 @@ public class ObjectDatabaseUpdater : MonoBehaviour {
 
     private byte[] additionalTextureBytes;
 
-    private byte[] textureBytes;
+    private byte[] textureBytes = null;
 
     private string extension;
 
@@ -37,7 +37,7 @@ public class ObjectDatabaseUpdater : MonoBehaviour {
     void Start () {
         
         existing = true;
-        InvokeRepeating("UpdateInfo",2.0f, 2.0f);
+        InvokeRepeating("UpdateInfo",5.0f, 5.0f);
     }
 
     // Update is called once per frame
