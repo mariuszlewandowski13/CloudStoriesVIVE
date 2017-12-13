@@ -3,6 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+public class UpdateActionsObject
+{
+    public int objeID;
+    public string actions;
+    public string filename;
+    public byte[] bytes;
+
+    public UpdateActionsObject(int id, string act, string file, byte[] byt)
+    {
+        objeID = id;
+        actions = act;
+        filename = file;
+        bytes = byt;
+    }
+}
+
 public class DatabaseController : MonoBehaviour {
 
     public delegate void ResultMethod(ProjectObject project);
@@ -22,6 +38,34 @@ public class DatabaseController : MonoBehaviour {
         form.AddField("owner", ApplicationStaticData.actualProject.owner);
         WWW w = new WWW(ApplicationStaticData.serverScriptsPath + "LoadUserLayouts.php", form);
         StartCoroutine(request(w, method));
+    }
+
+    private Queue<UpdateActionsObject> actionsUpdateQueue;
+    private bool updatingActions;
+
+    private void SaveObjectActions(UpdateActionsObject item)
+    {
+        WWWForm form = new WWWForm();
+
+
+        form.AddField("ID", item.objeID.ToString());
+        form.AddField("projectID", ApplicationStaticData.actualProject.id);
+        form.AddField("sceneID", ApplicationStaticData.actualProject.actualScene);
+
+        form.AddField("actions", item.actions);
+        form.AddField("filename", item.filename);
+
+        if  (item.bytes != null)
+        {
+            form.AddBinaryData("file", item.bytes, item.filename, "audio / mpeg");
+        }
+
+        string destinationFile = "UpdateObjectActions.php";
+
+        
+
+        WWW w = new WWW(ApplicationStaticData.serverScriptsPath + destinationFile, form);
+        StartCoroutine(changeActionsRequest(w));
     }
 
     IEnumerator request(WWW w, ResultMethod4 method)
@@ -211,6 +255,20 @@ public class DatabaseController : MonoBehaviour {
       //  Debug.Log(message);
     }
 
+    IEnumerator changeActionsRequest(WWW w)
+    {
+        yield return w;
+        if (w.error == null)
+        {
+            message = w.text;
+        }
+        else
+        {
+            message = "ERROR: " + w.error + "\n";
+        }
+        updatingActions = false;
+    }
+
     IEnumerator request(WWW w, ResultMethod2 method, Vector3 pos, Vector3 rot, Vector3 scale)
     {
         yield return w;
@@ -304,6 +362,12 @@ public class DatabaseController : MonoBehaviour {
     private void Start()
     {
         settingsUpdateCommands = new Queue<string>();
+        actionsUpdateQueue = new Queue<UpdateActionsObject>();
+    }
+
+    public void AddUpdateActionsObject(UpdateActionsObject item)
+    {
+        actionsUpdateQueue.Enqueue(item);
     }
 
     private void UpdateSettings(string command)
@@ -335,6 +399,12 @@ public class DatabaseController : MonoBehaviour {
         {
             updatingSettings = true;
             UpdateSettings(settingsUpdateCommands.Dequeue());
+        }
+
+        if (actionsUpdateQueue.Count > 0 && !updatingActions)
+        {
+            updatingActions = true;
+            SaveObjectActions(actionsUpdateQueue.Dequeue());
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public enum ObjectActionType
 {
@@ -29,6 +30,7 @@ public class ObjectActionsScript : MonoBehaviour {
 
     private List<ObjectAction> objectActions;
 
+    private bool audioUpdated;
 
 	void Start () {
         objectActions = new List<ObjectAction>();
@@ -45,6 +47,9 @@ public class ObjectActionsScript : MonoBehaviour {
         else {
             objectActions.Add(newAction);
         }
+
+        if (newAction.type == ObjectActionType.audio) audioUpdated = true;
+        UpdateDatabase();
     }
 
     public bool CheckActionExists(ObjectActionType type)
@@ -74,7 +79,9 @@ public class ObjectActionsScript : MonoBehaviour {
         if (act != null)
         {
             objectActions.Remove(act);
+            UpdateDatabase();
         }
+        
     }
 
     public string GetSQL()
@@ -92,5 +99,24 @@ public class ObjectActionsScript : MonoBehaviour {
             sql = sql.Substring(0, sql.Length - 1);
         }
         return sql;
+    }
+
+    public void UpdateDatabase()
+    {
+        if (GameObject.Find("LoadScene") != null)
+        {
+            string actions = GetSQL();
+            string filename = "";
+            byte[] bytes = null;
+            ObjectAction audioAction = CheckAndReturnActionTypeExists(ObjectActionType.audio);
+            if (audioAction != null && audioUpdated)
+            {
+                audioUpdated = false;
+                filename = audioAction.additionalData;
+                bytes = File.ReadAllBytes(ApplicationStaticData.audioPath + filename);
+            }
+            GameObject.Find("LoadScene").GetComponent<DatabaseController>().AddUpdateActionsObject(new UpdateActionsObject(GetComponent<SceneObjectInfo>().obj.ID, actions, filename, bytes));
+
+        }
     }
 }
