@@ -11,7 +11,7 @@ public class LoadAssets : MonoBehaviour {
         LoadMovies();
         LoadGIFS();
         Load3DObjects();
-        //LoadAudio();
+        LoadAudio();
        // Print3DObjectsInfo();
     }
 

@@ -18,6 +18,7 @@ public class GuiMenu : MonoBehaviour {
     protected float startZ = -0.3f;
 
     protected float zAdding = 0.3f;
+    protected float xAdding = -0.18f;
     protected float yAdding = -0.18f;
 
     protected int colsCount = 3;
@@ -28,7 +29,7 @@ public class GuiMenu : MonoBehaviour {
 
     private void Update()
     {
-        if (firstIcon.isRaycasting && scroll.canScrollUp)
+        if (firstIcon == null || (firstIcon.isRaycasting && scroll.canScrollUp))
         {
             scroll.canScrollUp = false;
         }
@@ -36,7 +37,7 @@ public class GuiMenu : MonoBehaviour {
         {
             scroll.canScrollUp = true;
         }
-        if (lastIcon.isRaycasting && scroll.canScrollDown)
+        if (lastIcon == null || (lastIcon.isRaycasting && scroll.canScrollDown))
         {
             scroll.canScrollDown = false;
         }

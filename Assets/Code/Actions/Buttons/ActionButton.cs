@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 
+
+[RequireComponent(typeof(PointableGUIButton))]
 public class ActionButton : GUIButton {
+
+    public GUIManager guiManager;
 
     public string textIfActionExists;
     public string textIfActionNonExists;
@@ -14,9 +18,9 @@ public class ActionButton : GUIButton {
         }
     }
 
-    public virtual void AddAction()
+    public virtual void AddAction(string additionalInfo)
     {
-        actualText = textIfActionExists;
+        actualText = textIfActionExists + " ("+ additionalInfo + ")";
     }
 
     public virtual void RemoveAction()

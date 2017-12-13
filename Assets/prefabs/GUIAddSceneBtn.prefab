@@ -40,7 +40,6 @@ GameObject:
   - component: {fileID: 65903276106023404}
   - component: {fileID: 23867994702066134}
   - component: {fileID: 114474519349232588}
-  - component: {fileID: 114448732041983898}
   m_Layer: 0
   m_Name: GUIAddSceneBtn
   m_TagString: Btn
@@ -176,24 +175,13 @@ TextMesh:
   m_Anchor: 4
   m_Alignment: 0
   m_TabSize: 4
-  m_FontSize: 100
+  m_FontSize: 80
   m_FontStyle: 0
   m_RichText: 1
   m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   m_Color:
     serializedVersion: 2
     rgba: 4294967295
---- !u!114 &114448732041983898
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1996629340957306}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0af7f1e1138047f49a1a0cfe6531a262, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114474519349232588
 MonoBehaviour:
   m_ObjectHideFlags: 1

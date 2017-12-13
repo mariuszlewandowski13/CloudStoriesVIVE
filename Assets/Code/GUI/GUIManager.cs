@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class GUIManager : MonoBehaviour {
 
-    private GameObject actualSelectedGameObject;
+    public GameObject actualSelectedGameObject;
 
     public GameObject deleteButton;
     public GameObject actions;
+
+    public GameObject actionsChangeScene;
+
+    public GameObject actionsURL;
+
+    public GameObject soundActions;
 
     // public AnimationManager animManager;
 
@@ -49,6 +55,9 @@ public class GUIManager : MonoBehaviour {
 
         ActivateSettings(true);
         ActivateObjectControlButtons(false);
+        ActivateSceneActions(false);
+        ActivateURLActions(false);
+        ActivateSoundActions(false);
 
     }
 
@@ -70,6 +79,9 @@ public class GUIManager : MonoBehaviour {
             ActivateSettings(true);
 
             ActivateObjectControlButtons(false);
+            ActivateSceneActions(false);
+            ActivateURLActions(false);
+            ActivateSoundActions(false);
         }
         
     }
@@ -131,6 +143,21 @@ public class GUIManager : MonoBehaviour {
         settings.SetActive(activate);
     }
 
+    private void ActivateSceneActions(bool activate)
+    {
+        actionsChangeScene.SetActive(activate);
+    }
+
+    private void ActivateURLActions(bool activate)
+    {
+        actionsURL.SetActive(activate);
+    }
+
+    private void ActivateSoundActions(bool activate)
+    {
+        soundActions.SetActive(activate);
+    }
+
     public void ShowHideEnviroment(bool setActive, bool update = true)
     {
         GameObject.Find("SCENE").GetComponent<EnviromentMAnager>().ShowHideEnviroment(setActive);
@@ -139,6 +166,36 @@ public class GUIManager : MonoBehaviour {
         {
             ApplicationStaticData.actualProject.projectSettings.isTableActive = setActive;
         }
-       
     }
+
+    public void ActivateActionsChangeScene()
+    {
+        ActivateObjectControlButtons(false);
+        ActivateSceneActions(true);
+    }
+
+    public void ActivateActionsURL()
+    {
+        ActivateObjectControlButtons(false);
+        ActivateURLActions(true);
+    }
+
+    public void ActivateActionsSounds()
+    {
+        ActivateObjectControlButtons(false);
+        ActivateSoundActions(true);
+    }
+
+    public void CancelActivateActions()
+    {
+        ActivateSoundActions(false);
+        ActivateSceneActions(false);
+        ActivateURLActions(false);
+        ActivateObjectControlButtons(true);
+        
+    }
+
+    
+
+
 }

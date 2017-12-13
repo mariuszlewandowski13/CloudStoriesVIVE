@@ -57,7 +57,7 @@ public class ObjectActionsScript : MonoBehaviour {
         return false;
     }
 
-    private ObjectAction CheckAndReturnActionTypeExists(ObjectActionType type)
+    public ObjectAction CheckAndReturnActionTypeExists(ObjectActionType type)
     {
         foreach (ObjectAction act in objectActions)
         {
