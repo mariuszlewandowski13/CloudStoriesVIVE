@@ -90,13 +90,13 @@ public class ObjectActionsScript : MonoBehaviour {
 
         foreach (ObjectAction act in objectActions)
         {
-            sql += (((int)act.type).ToString() + ",");
-            sql += act.additionalData + ",";
+            sql += (((int)act.type).ToString() + "#####");
+            sql += act.additionalData + "#####";
         }
 
         if (sql.Length > 0)
         {
-            sql = sql.Substring(0, sql.Length - 1);
+            sql = sql.Substring(0, sql.Length - 5);
         }
         return sql;
     }
