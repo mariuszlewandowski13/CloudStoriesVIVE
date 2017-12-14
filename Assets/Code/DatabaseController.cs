@@ -316,6 +316,18 @@ public class DatabaseController : MonoBehaviour {
         if (w.error == null)
         {
             message = w.text;
+            string[] msg = null;
+            msg = message.Split(new string[] { "#####" }, StringSplitOptions.None);
+            if (msg.Length > 0)
+            {
+                int ID = Int32.Parse(msg[0]);
+                string auth = msg[1];
+                string onwer = msg[2];
+                string name = msg[3];
+                ProjectObject proj = new ProjectObject(ID, auth, onwer, name);
+                proj.SetProjectSettings(true);
+                method(proj);
+            }
         }
         else
         {
@@ -323,18 +335,7 @@ public class DatabaseController : MonoBehaviour {
         }
         Debug.Log(message);
 
-        string[] msg = null;
-        msg = message.Split(new string[] { "#####" }, StringSplitOptions.None);
-        if (msg.Length > 0)
-        {
-            int ID = Int32.Parse(msg[0]);
-            string auth = msg[1];
-            string onwer = msg[2];
-            string name = msg[3];
-            ProjectObject proj = new ProjectObject(ID, auth, onwer, name);
-            proj.SetProjectSettings(true);
-            method(proj);
-        }
+        
     }
 
     IEnumerator request(WWW w, ResultMethod3 method)

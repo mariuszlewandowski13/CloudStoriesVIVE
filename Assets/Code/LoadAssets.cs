@@ -8,8 +8,8 @@ public class LoadAssets : MonoBehaviour {
     private void Start()
     {
         Load2DShapes();
-        LoadMovies();
-        LoadGIFS();
+       // LoadMovies();
+       // LoadGIFS();
         Load3DObjects();
         LoadAudio();
        // Print3DObjectsInfo();
@@ -23,7 +23,7 @@ public class LoadAssets : MonoBehaviour {
             {
                 ImageFilesInfoLoader loader = new ImageFilesInfoLoader(ApplicationStaticData.shapesPath);
                 string[] extensions = {".png" };
-            ApplicationStaticData.shapesInfos = loader.LoadImagesInfo(extensions);
+            ApplicationStaticData.shapesInfos = loader.LoadImagesInfo(extensions, "", -1, 5000000);
             }
             catch (Exception e)
             {
@@ -71,7 +71,7 @@ public class LoadAssets : MonoBehaviour {
         {
             ImageFilesInfoLoader loader = new ImageFilesInfoLoader(ApplicationStaticData.objects3DPath);
             string[] extensions = { ".obj" };
-            ApplicationStaticData.objects3DInfos = loader.Load3DObjectsInfos(extensions);
+            ApplicationStaticData.objects3DInfos = loader.Load3DObjectsInfos(extensions, "", -1, 5000000);
         }
         catch (Exception e)
         {

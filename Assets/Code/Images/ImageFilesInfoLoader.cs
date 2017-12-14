@@ -97,6 +97,9 @@ public class ImageFilesInfoLoader : FilesInfoLoader {
                         imgInfo.extension = extension;
                         imagesInfoList.Add(imgInfo);
                     }
+                    else {
+                        Debug.Log("Too big shape file");
+                    }
 
                    
                 }
@@ -171,7 +174,7 @@ public class ImageFilesInfoLoader : FilesInfoLoader {
                     {
                         long fileLength = new FileInfo(imageName).Length;
 
-                        if ((sizeLimit > 0 && fileLength < sizeLimit) || sizeLimit == -1)
+                        if ((sizeLimit > 0 && fileLength < sizeLimit*2) || sizeLimit == -1)
                         {
 
                             Object3DInfo imgInfo;
@@ -186,18 +189,26 @@ public class ImageFilesInfoLoader : FilesInfoLoader {
                                 string[] texts = Directory.GetFiles(dirName + additionalPath, "*" + ext);
                                 foreach (string tex in texts)
                                 {
-                                    TextureInfo texInfo;
-                                    texInfo.name = Path.GetFileName(tex);
-                                    texInfo.path = dirName;
-                                    texInfo.ext = ext;
-                                    texInfo.tex = new Texture2D(2, 2);
-                                    byte[] bytes = File.ReadAllBytes(dirName + "/" + Path.GetFileName(tex));
-                                    texInfo.tex.LoadImage(bytes);
-                                    imgInfo.texturesInfos.Add(texInfo);
+                                    long fileLength1 = new FileInfo(tex).Length;
+
+                                    if ((sizeLimit > 0 && fileLength1 < sizeLimit) || sizeLimit == -1)
+                                    {
+                                        TextureInfo texInfo;
+                                        texInfo.name = Path.GetFileName(tex);
+                                        texInfo.path = dirName;
+                                        texInfo.ext = ext;
+                                        texInfo.tex = new Texture2D(2, 2);
+                                        byte[] bytes = File.ReadAllBytes(dirName + "/" + Path.GetFileName(tex));
+                                        texInfo.tex.LoadImage(bytes);
+                                        imgInfo.texturesInfos.Add(texInfo);
+                                    }
+                                    else {
+                                        Debug.Log("Too big texture");
+                                    }
+                                    
                                 }
 
                             }
-
                                 objectsInfoList.Add(imgInfo);
                         }
 
